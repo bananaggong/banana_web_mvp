@@ -1,0 +1,28 @@
+# Comprehensive Cursor AI Rules: Full-Stack (Next.js + NestJS)
+
+## 1. Global Developer Principles (공통 원칙)
+- Write clean, maintainable, and self-documenting code.
+- Strictly use TypeScript in `strict` mode. Absolutely NO `any` types; always define precise `interface` or `type`.
+- Manage and secure all sensitive information using environment variables (`.env`).
+- Keep code concise. Add comments only to explain complex or non-obvious business logic.
+
+## 2. Frontend: Next.js (App Router) & Tailwind CSS
+- **Architecture**: Use Server Components by default for optimal performance. ONLY add `"use client"` at the top of the file when React hooks (`useState`, `useEffect`) or DOM interactivity are strictly required.
+- **Styling**: STRICTLY use Tailwind CSS. Follow a Mobile-First approach (`sm:`, `md:`, `lg:`). Do NOT write custom CSS in `.css` files. 
+- **Refactoring**: If Tailwind `className` strings become too long, extract them into logical variables or smaller reusable components.
+- **Optimization**: Always use `next/image` for images and `next/link` for client-side navigation. Break down complex UIs into smaller components inside a `components/` directory.
+
+## 3. Backend: NestJS Architecture & Patterns
+- **Architecture**: Strictly follow Dependency Injection and a Modular Architecture. Separate features into dedicated modules (e.g., `users/`, `auth/`, `common/`).
+- **File Naming Convention**: Use kebab-case for all files (e.g., `user.service.ts`, `user.controller.ts`).
+- **Separation of Concerns (Strict)**:
+  - **Controllers**: Handle ONLY HTTP requests, responses, and routing. Do not put business logic here.
+  - **Services**: Handle all core business logic and database/repository interactions.
+  - **Entities**: Define database schema and table structures.
+- **Validation & Data Transfer**: 
+  - Apply DTO (Data Transfer Object) validation on ALL inputs using `class-validator` (e.g., `@IsString()`, `@IsNotEmpty()`, `@IsEmail()`).
+- **Error Handling**: Implement proper HTTP exception handling using NestJS built-in exceptions (e.g., `BadRequestException`, `NotFoundException`).
+- **Testing**: Write unit tests for each feature, especially focusing on business logic in Services.
+
+## 4. Code Generation Rules
+- When asked to generate a new feature, automatically create the necessary Frontend components AND Backend modules (Controller, Service, DTO) following the above rules.
