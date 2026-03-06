@@ -3,10 +3,19 @@
 import { useEffect, useRef } from "react";
 
 export default function Home() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const heroWrapRef = useRef<HTMLDivElement>(null);
-  const hintTextRef = useRef<HTMLParagraphElement>(null);
-  const endTextRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef    = useRef<HTMLCanvasElement>(null);
+  const heroWrapRef  = useRef<HTMLDivElement>(null);
+  const hintTextRef  = useRef<HTMLParagraphElement>(null);
+  const endTextRef   = useRef<HTMLParagraphElement>(null);
+  const hintSpanRef  = useRef<HTMLSpanElement>(null);
+  const endSpanRef   = useRef<HTMLSpanElement>(null);
+
+  // 헤더 동적 색상 제어용 refs
+  const logoRef         = useRef<HTMLSpanElement>(null);
+  const navAboutRef     = useRef<HTMLAnchorElement>(null);
+  const navCommunityRef = useRef<HTMLAnchorElement>(null);
+  const navAiAgentRef   = useRef<HTMLAnchorElement>(null);
+  const navSpacesRef    = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -72,27 +81,80 @@ export default function Home() {
       const heroTop = heroWrap.offsetTop;
       const scrollable = heroWrap.offsetHeight - window.innerHeight;
       const progress = Math.max(0, Math.min(1, (window.scrollY - heroTop) / scrollable));
-      const targetFrame = Math.round(progress * (frameCount - 1));
+      const targetFrame = Math.round(progress * Math.floor(frameCount * 0.9));
 
       drawFrame(targetFrame);
 
-      // "Scroll to peel the banana" — 스크롤 초반 20% 구간에서 페이드아웃
-      if (hintTextRef.current) {
-        hintTextRef.current.style.opacity = String(Math.max(0, 1 - progress / 0.2));
+      // "Scroll to peel the banana" — 초반 20% 페이드아웃, 완전할 때 span blink 켜짐
+      if (hintTextRef.current && hintSpanRef.current) {
+        const hintOpacity = Math.max(0, 1 - progress / 0.2);
+        hintTextRef.current.style.opacity = String(hintOpacity);
+        hintSpanRef.current.style.animationPlayState =
+          hintOpacity >= 0.99 ? "running" : "paused";
       }
 
-      // "test" 텍스트 — 스크롤 후반 80~100% 구간에서 페이드인
-      if (endTextRef.current) {
-        endTextRef.current.style.opacity = String(Math.max(0, (progress - 0.8) / 0.2));
+      // "Scroll to Feel the BANANA" — 60~80% 페이드인, 완전할 때 span blink 켜짐
+      if (endTextRef.current && endSpanRef.current) {
+        const endOpacity = Math.max(0, (progress - 0.6) / 0.2);
+        endTextRef.current.style.opacity = String(endOpacity);
+        endSpanRef.current.style.animationPlayState =
+          endOpacity >= 0.99 ? "running" : "paused";
       }
     };
 
     loadFrames();
     window.addEventListener("scroll", syncToScroll, { passive: true });
 
+    // ── 섹션별 헤더 색상 제어 ──────────────────────────────────────────
+    const updateHeader = (activeId: string, isDark: boolean) => {
+      const BLUE   = "#3b82f6";
+      const WHITE  = "#ffffff";
+      const W_MUTE = "rgba(255,255,255,0.70)";
+      const YELLOW = "#facc15";
+      const GRAY   = "#6b7280";
+
+      if (logoRef.current)
+        logoRef.current.style.color = isDark ? WHITE : YELLOW;
+
+      const links: [React.RefObject<HTMLAnchorElement | null>, string][] = [
+        [navAboutRef,     "about"],
+        [navCommunityRef, "community"],
+        [navAiAgentRef,   "ai-agent"],
+        [navSpacesRef,    "spaces"],
+      ];
+      links.forEach(([ref, id]) => {
+        if (!ref.current) return;
+        ref.current.style.color =
+          id === activeId ? BLUE : isDark ? W_MUTE : GRAY;
+      });
+    };
+
+    // 초기 상태: 히어로 (흰색 헤더, 활성 없음)
+    updateHeader("", true);
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          const isDark = id === "hero" || id === "about";
+          updateHeader(id, isDark);
+        });
+      },
+      { threshold: 0.3 },
+    );
+
+    const observeIds = ["hero", "about", "community", "ai-agent", "spaces"];
+    observeIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+    // ──────────────────────────────────────────────────────────────────
+
     return () => {
       window.removeEventListener("scroll", syncToScroll);
       decoder?.close();
+      sectionObserver.disconnect();
     };
   }, []);
 
@@ -101,27 +163,53 @@ export default function Home() {
       {/* ================================================================
           HEADER — 고정 내비게이션
       ================================================================ */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 md:px-10">
-        <span className="text-sm font-semibold tracking-wide text-yellow-400">인투미랩</span>
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 md:px-12">
+        <span
+          ref={logoRef}
+          className="text-sm font-semibold tracking-wide transition-colors duration-300"
+          style={{ color: "#ffffff" }}
+        >
+          인투미랩
+        </span>
         <nav>
-          <ul className="flex items-center gap-6 text-sm text-gray-700">
+          <ul className="flex items-center gap-8 text-sm">
             <li>
-              <a href="#about" className="transition-colors hover:text-yellow-400">
+              <a
+                ref={navAboutRef}
+                href="#about"
+                className="transition-colors duration-300"
+                style={{ color: "rgba(255,255,255,0.70)" }}
+              >
                 About
               </a>
             </li>
             <li>
-              <a href="#community" className="transition-colors hover:text-yellow-400">
+              <a
+                ref={navCommunityRef}
+                href="#community"
+                className="transition-colors duration-300"
+                style={{ color: "rgba(255,255,255,0.70)" }}
+              >
                 Community
               </a>
             </li>
             <li>
-              <a href="#ai-agent" className="transition-colors hover:text-yellow-400">
+              <a
+                ref={navAiAgentRef}
+                href="#ai-agent"
+                className="transition-colors duration-300"
+                style={{ color: "rgba(255,255,255,0.70)" }}
+              >
                 AI Agent
               </a>
             </li>
             <li>
-              <a href="#spaces" className="transition-colors hover:text-yellow-400">
+              <a
+                ref={navSpacesRef}
+                href="#spaces"
+                className="transition-colors duration-300"
+                style={{ color: "rgba(255,255,255,0.70)" }}
+              >
                 Spaces
               </a>
             </li>
@@ -135,30 +223,48 @@ export default function Home() {
             - 300vh 높이로 스크롤 여유 공간 확보
             - sticky로 viewport에 고정된 채 canvas 프레임만 갱신
         ================================================================ */}
-        <div ref={heroWrapRef} className="relative h-[300vh]">
-          <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-white">
-            {/* Canvas: ImageDecoder로 animated WebP 프레임을 직접 렌더링 */}
+        <div id="hero" ref={heroWrapRef} className="relative h-[300vh]">
+          <div className="sticky top-0 h-screen w-full relative overflow-hidden bg-white">
+            {/* Canvas: absolute inset-0으로 뷰포트 전체 채움 */}
             <canvas
               ref={canvasRef}
-              className="h-[70vh] w-auto max-w-[90vw] object-contain"
+              className="absolute inset-0 h-full w-full"
             />
 
-            {/* 초기 스크롤 유도 힌트 — 스크롤 시작 시 페이드아웃 */}
+            {/* 초기 힌트 텍스트 — 외부 p: 페이드 / 내부 span: 글자 깜빡임 */}
             <p
               ref={hintTextRef}
-              className="pointer-events-none absolute bottom-10 text-sm tracking-widest text-gray-400 transition-none"
+              className="pointer-events-none absolute inset-0 flex items-center justify-center transition-none"
               style={{ opacity: 1 }}
             >
-              Scroll to peel the banana ∨
+              <span
+                ref={hintSpanRef}
+                className="text-5xl font-bold text-gray-400 md:text-7xl"
+                style={{
+                  animation: "glow-blink 2.5s ease-in-out infinite",
+                  animationPlayState: "running",
+                }}
+              >
+                Scroll to peel the banana ∨
+              </span>
             </p>
 
-            {/* 스크롤 끝 무렵 페이드인되는 텍스트 */}
+            {/* 엔딩 텍스트 — 외부 p: 페이드 / 내부 span: 글자 깜빡임 */}
             <p
               ref={endTextRef}
-              className="pointer-events-none absolute inset-0 flex items-center justify-center text-5xl font-bold text-gray-900 transition-none md:text-7xl"
-              style={{ opacity: 0, display: "flex" }}
+              className="pointer-events-none absolute inset-0 flex items-center justify-center transition-none"
+              style={{ opacity: 0 }}
             >
-              test
+              <span
+                ref={endSpanRef}
+                className="text-5xl font-bold text-gray-900 md:text-7xl"
+                style={{
+                  animation: "glow-blink 2.5s ease-in-out infinite",
+                  animationPlayState: "paused",
+                }}
+              >
+                Scroll to Feel the BANANA
+              </span>
             </p>
           </div>
         </div>
@@ -190,7 +296,7 @@ export default function Home() {
         >
           <div className="mx-auto max-w-6xl">
             <div className="mb-14 text-center">
-              <p className="mb-2 text-sm tracking-widest text-gray-400">커뮤니티</p>
+              <p className="mb-2 text-left text-4xl tracking-widest text-gray-400 md:text-5xl">Community</p>
               <h2 className="text-4xl font-bold text-yellow-400 md:text-5xl">인투미랩</h2>
               <p className="mt-4 text-base text-gray-500 md:text-lg">
                 예비창업자와 창업자를 연결하는 실습과 네트워킹 중심 커뮤니티
@@ -224,7 +330,7 @@ export default function Home() {
           className="min-h-screen w-full bg-white px-6 py-24 md:px-12 lg:px-20"
         >
           <div className="mx-auto max-w-6xl">
-            <p className="mb-6 text-center text-sm tracking-widest text-gray-400">AI Agent</p>
+            <p className="mb-6 text-left text-4xl tracking-widest text-gray-400 md:text-5xl">AI Agent</p>
 
             <h2 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl lg:text-5xl">
               창업 지원을 AI가 직관적으로 돕습니다
@@ -263,28 +369,75 @@ export default function Home() {
         </section>
 
         {/* ================================================================
-            SECTION 5: SPACES — 헤더 텍스트 + 전폭 이미지
+            SECTION 5: SPACES — 헤더 + 5개 전폭 공간 카드
         ================================================================ */}
-        <section id="spaces" className="min-h-screen w-full bg-white">
+        <section id="spaces" className="w-full bg-white">
+          {/* 섹션 헤더 */}
           <div className="px-6 py-20 text-center md:px-12">
-            <p className="mb-5 text-sm tracking-widest text-gray-400">SPACE</p>
+            <p className="mb-5 text-left text-4xl tracking-widest text-gray-400 md:text-5xl">SPACE</p>
             <h2 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl lg:text-5xl">
               Explore the spaces where startups grow.
             </h2>
           </div>
 
-          {/* 전폭 이미지 플레이스홀더 */}
-          <div className="relative aspect-[16/7] w-full bg-gray-300">
-            <div className="absolute inset-0 bg-black/25" />
-            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
-              <h3 className="text-xl font-bold text-white md:text-2xl lg:text-3xl">
-                GYOWOO LOUNGE
-              </h3>
-              <p className="mt-2 text-sm text-white/80 md:text-base">
-                Premium event space for community gatherings and networking.
-              </p>
-            </div>
+          {/* 공간 목록 — 카드 높이 50vh, 카드 사이 백색 간격 */}
+          <div className="flex flex-col gap-36">
+            {[
+              {
+                name: "GYOWOO LOUNGE",
+                desc: "Premium event space for community gatherings and networking.",
+                bg: "bg-gray-400",
+                overlay: "bg-black/30",
+              },
+              {
+                name: "WORK CAFE",
+                desc: "Open collaborative workspace designed for founders and creators.",
+                bg: "bg-stone-700",
+                overlay: "bg-black/40",
+              },
+              {
+                name: "CREATIVE STUDIO",
+                desc: "Professional media production space for content and branding.",
+                bg: "bg-neutral-800",
+                overlay: "bg-black/35",
+              },
+              {
+                name: "GYOWOO OFFICE",
+                desc: "Private offices and meeting rooms for focused work.",
+                bg: "bg-slate-800",
+                overlay: "bg-black/40",
+              },
+              {
+                name: "SKY DECK",
+                desc: "Rooftop networking and relaxation space with city views.",
+                bg: "bg-gradient-to-b from-gray-200 to-gray-500",
+                overlay: "bg-black/10",
+              },
+            ].map(({ name, desc, bg, overlay }) => (
+              <div key={name} className={`relative h-[50vh] w-full ${bg}`}>
+                <div className={`absolute inset-0 ${overlay}`} />
+                <div className="absolute bottom-8 left-8 md:bottom-10 md:left-12">
+                  <h3 className="text-xl font-bold text-white md:text-2xl">{name}</h3>
+                  <p className="mt-2 max-w-xs text-sm text-white/80 md:text-base">{desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
+        </section>
+
+        {/* ================================================================
+            CTA 섹션 — "함께 성장할 준비가 되셨나요?"
+        ================================================================ */}
+        <section className="flex min-h-[60vh] w-full flex-col items-center justify-center bg-gradient-to-b from-white via-gray-50 to-gray-100 px-6 py-32 text-center">
+          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl lg:text-4xl">
+            함께 성장할 준비가 되셨나요?
+          </h2>
+          <a
+            href="#"
+            className="mt-6 text-sm text-gray-400 underline underline-offset-4 transition-colors hover:text-gray-700"
+          >
+            문의하기
+          </a>
         </section>
       </main>
 
