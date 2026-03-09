@@ -61,11 +61,7 @@ const FEATURES: Feature[] = [
 // 슬롯머신 각 아이템의 고정 높이 (px)
 const SLOT_ITEM_HEIGHT = 56;
 
-interface StickyScrollFeaturesProps {
-  sharedImageActive: boolean;
-}
-
-export default function StickyScrollFeatures({ sharedImageActive }: StickyScrollFeaturesProps) {
+export default function StickyScrollFeatures() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,6 +74,7 @@ export default function StickyScrollFeatures({ sharedImageActive }: StickyScroll
   triggerRefs.current.length = FEATURES.length;
   imageRefs.current.length = FEATURES.length;
 
+  // activeIndex를 현재 FEATURES 범위 내로 클램핑
   const safeIndex = Math.min(activeIndex, FEATURES.length - 1);
 
   // ScrollTrigger 등록 (마운트 시 1회)
@@ -85,22 +82,12 @@ export default function StickyScrollFeatures({ sharedImageActive }: StickyScroll
     () => {
       triggerRefs.current.forEach((trigger, i) => {
         if (!trigger) return;
-        // 이미지·텍스트 전환 트리거
         ScrollTrigger.create({
           trigger,
-          start: "top 30%",
-          end: "bottom 30%",
+          start: "top 35%",
+          end: "bottom 50%",
           onEnter: () => setActiveIndex(i),
           onEnterBack: () => setActiveIndex(i),
-        });
-
-        // 각 섹션 정렬 시점에 일시 저항감 추가
-        ScrollTrigger.create({
-          trigger,
-          start: "top top+=64",
-          end: "+= 80",
-          pin: true,
-          pinSpacing: false,
         });
       });
     },
@@ -119,20 +106,17 @@ export default function StickyScrollFeatures({ sharedImageActive }: StickyScroll
       });
 
       // 우측 이미지 크로스페이드
-      // sharedImageActive=true (flying 이미지 활성): 모든 feature 이미지 숨김
-      // sharedImageActive=false (flying 이미지 비활성): safeIndex에 해당하는 이미지만 표시
       imageRefs.current.forEach((img, i) => {
         if (!img) return;
-        const shouldShow = i === safeIndex && !sharedImageActive;
         gsap.to(img, {
-          opacity: shouldShow ? 1 : 0,
-          duration: 0.25,
+          opacity: i === safeIndex ? 1 : 0,
+          duration: 0.5,
           ease: "power2.out",
           overwrite: true,
         });
       });
 
-      // 좌측 스크롤 텍스트 아이템 음영 처리
+      // 좌측 스크롤 텍스트 아이템 음영 처리: 비활성 = 흐릿하게
       triggerRefs.current.forEach((item, i) => {
         if (!item) return;
         gsap.to(item, {
@@ -143,7 +127,7 @@ export default function StickyScrollFeatures({ sharedImageActive }: StickyScroll
         });
       });
     },
-    { dependencies: [safeIndex, sharedImageActive] },
+    { dependencies: [safeIndex] },
   );
 
   return (
@@ -184,7 +168,6 @@ export default function StickyScrollFeatures({ sharedImageActive }: StickyScroll
           {FEATURES.map((feature, i) => (
             <div
               key={feature.id}
-              data-feature-index={i}
               ref={(el) => {
                 triggerRefs.current[i] = el;
               }}
@@ -219,9 +202,8 @@ export default function StickyScrollFeatures({ sharedImageActive }: StickyScroll
                   ref={(el) => {
                     imageRefs.current[i] = el;
                   }}
-                  data-feature-img=""
                   className="absolute inset-0"
-                  style={{ opacity: 0 }}
+                  style={{ opacity: i === 0 ? 1 : 0 }}
                 >
                   <Image src={f.imgUrl} alt={f.title} fill className="object-cover" />
                 </div>
