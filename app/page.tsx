@@ -97,14 +97,6 @@ export default function Page() {
             SECTION 2: FEATURES — GSAP 스티키 스크롤 (슬롯머신 + 크로스페이드)
         ================================================================ */}
         <section className="py-20">
-          {/* 섹션 타이틀 */}
-          <div className="mx-auto max-w-7xl px-6 pb-16 lg:px-16">
-            <h2 className="max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
-              testtest{" "}
-              <span className="text-orange-500">testtest testtest</span>{" "}
-              testtest testtest testtest testtest testtest.
-            </h2>
-          </div>
 
           {/* 스티키 스크롤 피처 섹션 */}
           <StickyScrollFeatures onIndexChange={setActiveFeatureIndex} />
@@ -208,7 +200,7 @@ export default function Page() {
             <div className="mt-16 border-t border-gray-300 pt-12">
               <h3 className="text-3xl font-bold leading-tight md:text-4xl">
                 testtest testtest testtest testtest{" "}
-                <span className="text-orange-500">testtest testtest testtest testtest?</span>
+                <span className="text-orange-500">testtest twefewfesttest testtest testtest?</span>
               </h3>
               <div className="mt-6 flex flex-wrap gap-3">
                 <button className="rounded-md bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-700">

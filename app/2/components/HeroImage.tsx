@@ -70,7 +70,7 @@ export default function HeroImage({ src, images, activeIndex }: HeroImageProps) 
     const loamDocTop = loamTrigger
       ? loamTrigger.getBoundingClientRect().top + window.scrollY
       : stickyWrapperDocTop;
-    const dockScroll = loamDocTop - window.innerHeight * 0.35;
+    const dockScroll = loamDocTop - window.innerHeight * 0.50;
     const startScroll = heroDocTop - 64;
     const dockProgress = Math.min(0.99, Math.max(0.01, (dockScroll - startScroll) / scrollRange));
 
