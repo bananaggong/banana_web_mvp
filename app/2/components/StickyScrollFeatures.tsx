@@ -61,12 +61,17 @@ interface StickyScrollFeaturesProps {
   onIndexChange?: (index: number) => void;
 }
 
+const LAST_FEATURE_INDEX = FEATURES.length - 1;
+
 export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeaturesProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const slotHeaderRef = useRef<HTMLDivElement>(null);
+  // 마지막 feature 카드 핀 용도
+  const lastCardSpacerRef = useRef<HTMLDivElement>(null);
 
   triggerRefs.current.length = FEATURES.length;
 
@@ -74,22 +79,106 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
 
   useGSAP(
     () => {
+      // 마지막 카드(FORESTING OS) 핀 상태
+      let dockScrollY = 0;
+      let docked = false;
+      let pinnedRect = { top: 0, left: 0, width: 0, height: 0 };
+
+      // 슬롯머신 헤더의 sticky 위치 (top: 64px)
+      const HEADER_STICKY_TOP = 64;
+      let headerPinnedLeft = 0;
+      let headerPinnedWidth = 0;
+
+      const trackScroll = () => {
+        if (!docked) return;
+        const el = triggerRefs.current[LAST_FEATURE_INDEX];
+        const header = slotHeaderRef.current;
+        const delta = window.scrollY - dockScrollY;
+        if (el) gsap.set(el, { top: pinnedRect.top - delta });
+        if (header) gsap.set(header, { top: HEADER_STICKY_TOP - delta });
+      };
+
+      const pinLastCard = () => {
+        const el = triggerRefs.current[LAST_FEATURE_INDEX];
+        const header = slotHeaderRef.current;
+        const spacer = lastCardSpacerRef.current;
+        if (!el || docked) return;
+
+        const rect = el.getBoundingClientRect();
+        pinnedRect = { top: rect.top, left: rect.left, width: rect.width, height: rect.height };
+        dockScrollY = window.scrollY;
+        docked = true;
+
+        // 레이아웃 유지용 spacer 활성화
+        if (spacer) {
+          spacer.style.height = `${rect.height}px`;
+          spacer.style.display = "block";
+        }
+
+        // FORESTING OS 카드 pin
+        gsap.set(el, {
+          position: "fixed",
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          zIndex: 15,
+          margin: 0,
+        });
+
+        // 슬롯머신 헤더 pin (sticky 위치 그대로 fixed로 전환)
+        if (header) {
+          const headerRect = header.getBoundingClientRect();
+          headerPinnedLeft = headerRect.left;
+          headerPinnedWidth = headerRect.width;
+          gsap.set(header, {
+            position: "fixed",
+            top: HEADER_STICKY_TOP,
+            left: headerPinnedLeft,
+            width: headerPinnedWidth,
+            zIndex: 15,
+          });
+        }
+
+        window.addEventListener("scroll", trackScroll, { passive: true });
+      };
+
+      const unpinLastCard = () => {
+        const el = triggerRefs.current[LAST_FEATURE_INDEX];
+        const header = slotHeaderRef.current;
+        const spacer = lastCardSpacerRef.current;
+        if (!el || !docked) return;
+
+        docked = false;
+        window.removeEventListener("scroll", trackScroll);
+
+        gsap.set(el, { position: "", top: "", left: "", width: "", zIndex: "", margin: "" });
+        if (header) gsap.set(header, { position: "", top: "", left: "", width: "", zIndex: "" });
+        if (spacer) spacer.style.display = "none";
+      };
+
       triggerRefs.current.forEach((trigger, i) => {
         if (!trigger) return;
         ScrollTrigger.create({
           trigger,
-          start: "top 35%",
-          end: "bottom 50%",
+          start: "top 40%",
+          end: "bottom 60%",
           onEnter: () => {
             setActiveIndex(i);
             onIndexChange?.(i);
+            if (i === LAST_FEATURE_INDEX) pinLastCard();
           },
           onEnterBack: () => {
             setActiveIndex(i);
             onIndexChange?.(i);
+            // 마지막 카드 이전으로 역스크롤 시 unpin
+            if (i === LAST_FEATURE_INDEX - 1) unpinLastCard();
           },
         });
       });
+
+      return () => {
+        window.removeEventListener("scroll", trackScroll);
+      };
     },
     { scope: containerRef },
   );
@@ -124,7 +213,7 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
       <div className="hidden gap-16 lg:flex">
         {/* ── Left column: sticky 슬롯머신 헤더 + 스크롤 텍스트 ── */}
         <div className="min-w-0 flex-1">
-          <div className="sticky top-16 z-10 bg-white pb-6 pt-10">
+          <div ref={slotHeaderRef} className="sticky top-16 z-10 bg-white pb-6 pt-10">
             <p className="mb-2 text-sm tracking-wide text-gray-400">Core Products</p>
             <div className="overflow-hidden" style={{ height: SLOT_ITEM_HEIGHT }}>
               <div ref={sliderRef}>
@@ -167,6 +256,8 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
               </div>
             </div>
           ))}
+          {/* 마지막 카드 pin 시 레이아웃 유지용 spacer */}
+          <div ref={lastCardSpacerRef} style={{ display: "none" }} />
         </div>
 
         {/* ── Right column: ghost anchor (HeroImage flying 이미지의 morph target) ── */}
