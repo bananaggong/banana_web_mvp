@@ -48,10 +48,10 @@ const FEATURES: Feature[] = [
     slideText: "FORESTING OS",
     title: "Transform raw data",
     description: [
-      "업무 흐름 구조화",
-      "일정 및 과업 정리",
-      "의사결정 지원",
-      "개인 작업 패턴 기반 추천 시스템"
+      "업무 흐름 구조화",<br />,
+      "일정 및 과업 정리",<br />,
+      "의사결정 지원",<br />, 
+      "개인 작업 패턴 기반 추천 시스템",
     ],
     imgUrl:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
@@ -144,7 +144,7 @@ export default function StickyScrollFeatures() {
         <div className="min-w-0 flex-1">
           {/* sticky 슬롯머신: 좌측 컬럼 높이(N×100vh)까지 bound */}
           <div className="sticky top-16 z-10 bg-white pb-6 pt-10">
-            <p className="mb-2 text-sm tracking-wide text-gray-400">The AppGen platform</p>
+            <p className="mb-2 text-sm tracking-wide text-gray-400">Core Products</p>
             <div className="overflow-hidden" style={{ height: SLOT_ITEM_HEIGHT }}>
               <div ref={sliderRef}>
                 {FEATURES.map((f) => (

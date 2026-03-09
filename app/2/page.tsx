@@ -32,31 +32,53 @@ export default function Page() {
 
       <main>
         {/* ================================================================
-            SECTION 1: HERO — 좌 텍스트 / 우 제품 스크린샷
+            SECTION 1: HERO — 상단 중앙 헤드라인 + 하단 좌텍스트/우이미지
         ================================================================ */}
-        <section className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-24 md:flex-row md:gap-16 lg:px-16">
-          {/* 좌: 헤드라인 + 버튼 */}
-          <div className="flex-1">
-            <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-6xl">
-              testtest testtest testtest testtest testtest.
-            </h1>
-            <p className="mt-5 text-xl text-gray-500">
-              testtest testtest testtest testtest testtest testtest testtest testtest.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <button className="rounded-md bg-gray-900 px-6 py-3 text-sm font-semibold text-white hover:bg-gray-700">
-                testtest testtest testtest
-              </button>
-              <button className="rounded-md border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50">
-                testtest testtest
-              </button>
-            </div>
-          </div>
+        {/* ================================================================
+            SECTION 1: HERO — 전체 너비 956px 고정 및 좌측 정렬 레이아웃
+        ================================================================ */}
+        <section className="mx-auto max-w-[956px] px-6 pb-20 pt-24 lg:px-0">
+        {/* 상단: 중앙 정렬 메인 헤드라인 (기존 유지) */}
+        <h1 className="text-center text-6xl font-bold leading-tight tracking-tight md:text-7xl lg:text-8xl">
+            We build
+            <br />
+            Infrastructure
+            <br />
+            For Execution.
+        </h1>
 
-          {/* 우: 제품 스크린샷 플레이스홀더 */}
-          <div className="w-full flex-1">
-            <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gray-200 shadow-2xl" />
-          </div>
+        {/* 하단 콘텐츠 컨테이너: 이미지와 동일한 956px 너비 설정 및 좌측 정렬 */}
+        <div className="mt-16 w-full"> 
+            {/* 텍스트 영역: items-start와 text-left로 좌측 정렬 */}
+            <div className="flex flex-col items-start text-left">
+            {/* 부제목: 너비 제한 제거하여 956px 내에서 유연하게 배치 */}
+            <h2 className="text-2xl font-bold leading-snug text-gray-900 md:text-3xl">
+                AI와 데이터를 기반으로 판단, 전략, 실행을 연결하는<br />
+                Banana Technology.
+            </h2>
+
+            {/* 설명: 너비 제한 제거 */}
+            <p className="mt-4 text-base leading-relaxed text-gray-500">
+                우리는 복잡한 문제를 구조화하고<br />
+                아이디어와 전략이 실제 실행으로 이어질 수 있도록 소프트웨어와 실행 인프라를 설계한다.
+            </p>
+
+            {/* CTA 버튼: justify-start로 좌측 정렬 */}
+            <div className="mt-8 flex flex-wrap justify-start gap-3">
+                <button className="rounded-md bg-gray-900 px-6 py-3 text-sm font-semibold text-white hover:bg-gray-700">
+                testtest testtest testtest
+                </button>
+                <button className="rounded-md border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50">
+                testtest testtest
+                </button>
+            </div>
+            </div>
+
+            {/* 이미지: 가로 956px, 세로 641px 고정 (aspect ratio 사용) */}
+            <div className="mt-12">
+            <div className="aspect-[956/641] w-full overflow-hidden rounded-2xl bg-gray-200 shadow-xl" />
+            </div>
+        </div>
         </section>
 
         {/* ================================================================
