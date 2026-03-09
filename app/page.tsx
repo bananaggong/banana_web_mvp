@@ -169,7 +169,7 @@ export default function Home() {
           className="text-sm font-semibold tracking-wide transition-colors duration-300"
           style={{ color: "#ffffff" }}
         >
-          인투미랩
+          Banana Technology
         </span>
         <nav>
           <ul className="flex items-center gap-8 text-sm">
@@ -274,13 +274,16 @@ export default function Home() {
         ================================================================ */}
         <section
           id="about"
-          className="flex min-h-screen w-full items-center justify-center bg-yellow-400 px-6 py-24 md:px-16 lg:px-32"
+          className="flex min-h-screen w-full items-center justify-center bg-white px-6 py-24 md:px-16 lg:px-32"
         >
           <div className="max-w-4xl text-center">
-            <h2 className="text-3xl font-bold leading-snug text-white md:text-4xl lg:text-5xl">
+            <h2
+              className="text-4xl font-bold leading-tight md:text-5xl lg:text-[48px]"
+              style={{ color: "#FEDD00" }}
+            >
               우리는 창업 과정을 쉽고 직관적으로 만들어 누구나 도전할 수 있는 환경을 제공합니다.
             </h2>
-            <p className="mt-8 text-sm leading-relaxed text-white/80 md:text-base lg:text-lg">
+            <p className="mt-10 text-xl leading-relaxed md:text-2xl" style={{ color: "#FEDD00" }}>
               예비창업자 커뮤니티, AI 지원 프로그램, 맞춤형 비즈니스 공간을 통해 창업의 모든 과정을
               단순화하고, 지속 가능한 성장을 돕습니다.
             </p>
@@ -295,27 +298,43 @@ export default function Home() {
           className="min-h-screen w-full bg-white px-6 py-24 md:px-12 lg:px-20"
         >
           <div className="mx-auto max-w-6xl">
-            <div className="mb-14 text-center">
-              <p className="mb-2 text-left text-4xl tracking-widest text-gray-400 md:text-5xl">Community</p>
-              <h2 className="text-4xl font-bold text-yellow-400 md:text-5xl">인투미랩</h2>
-              <p className="mt-4 text-base text-gray-500 md:text-lg">
+            {/* 섹션 헤더 */}
+            <div className="mb-12">
+              <p className="mb-6 text-xl font-medium" style={{ color: "#555555" }}>
+                커뮤니티
+              </p>
+              <h2 className="text-center text-4xl font-bold md:text-5xl" style={{ color: "#222222" }}>
+                인투미랩
+              </h2>
+              <p className="mt-4 text-center text-2xl" style={{ color: "#555555" }}>
                 예비창업자와 창업자를 연결하는 실습과 네트워킹 중심 커뮤니티
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {/* 5개 카드 그리드 */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {[
                 { label: "Networking", desc: "예비창업자들이 모여 아이디어를 공유하고 협력합니다" },
-                { label: "Workshop", desc: "실전 창업 노하우와 전략을 배우는 교육 프로그램" },
-                { label: "Workspace", desc: "창업자들이 함께 일하며 시너지를 만드는 공간" },
+                { label: "Workshop",   desc: "실전 창업 노하우와 전략을 배우는 교육 프로그램" },
+                { label: "Workspace",  desc: "창업자들이 함께 일하며 시너지를 만드는 공간" },
+                { label: "Pitching",   desc: "투자자 앞에서 아이디어를 발표하는 기회" },
+                { label: "Mentoring",  desc: "경험 많은 전문가들의 1:1 맞춤형 조언" },
               ].map(({ label, desc }) => (
                 <div key={label} className="flex flex-col gap-3">
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-gray-200">
-                    <span className="absolute bottom-3 left-3 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold text-white">
+                  <div
+                    className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-gray-200"
+                    style={{ boxShadow: "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)" }}
+                  >
+                    <span
+                      className="absolute bottom-3 left-3 rounded-full px-3 py-1.5 text-sm font-bold"
+                      style={{ backgroundColor: "#FEDD00", color: "#0085CA" }}
+                    >
                       {label}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600">{desc}</p>
+                  <p className="text-base font-medium" style={{ color: "#222222" }}>
+                    {desc}
+                  </p>
                 </div>
               ))}
             </div>
@@ -330,40 +349,36 @@ export default function Home() {
           className="min-h-screen w-full bg-white px-6 py-24 md:px-12 lg:px-20"
         >
           <div className="mx-auto max-w-6xl">
-            <p className="mb-6 text-left text-4xl tracking-widest text-gray-400 md:text-5xl">AI Agent</p>
-
-            <h2 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl lg:text-5xl">
-              창업 지원을 AI가 직관적으로 돕습니다
-            </h2>
-            <p className="mt-5 max-w-4xl text-base leading-relaxed text-gray-500 md:text-lg lg:text-xl">
-              AI 기반의 맞춤형 지원으로 예비창업자와 창업자가 복잡한 과정을 쉽게 관리할 수 있습니다.
-            </p>
-
-            {/* 좌: 텍스트 / 우: 이미지 플레이스홀더 */}
-            <div className="mt-14 flex flex-col gap-10 md:flex-row md:items-center md:gap-16">
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 md:text-2xl">
-                  AI가 창업 과정을 안내합니다
-                </h3>
-                <p className="mt-4 text-sm leading-relaxed text-gray-500 md:text-base">
-                  맞춤형 계획, 실습 관리, 투자자 연결 등 창업에 필요한 모든 지원을 직관적으로
-                  제공합니다.
-                </p>
-              </div>
-              <div className="flex-1">
-                <div className="aspect-[4/3] w-full rounded-xl bg-gray-200" />
-              </div>
+            {/* 섹션 레이블 + 메인 헤딩 — 중앙 정렬 */}
+            <div className="text-center">
+              <p className="mb-4 text-[27px] font-medium" style={{ color: "#555555" }}>
+                AI Agent
+              </p>
+              <h2 className="text-5xl font-bold leading-tight md:text-6xl lg:text-[64px]" style={{ color: "#222222" }}>
+                창업 지원을 AI가 직관적으로 돕습니다
+              </h2>
+              <p className="mt-6 text-2xl leading-relaxed md:text-3xl" style={{ color: "#555555" }}>
+                AI 기반의 맞춤형 지원으로 예비창업자와 창업자가 복잡한 과정을 쉽게 관리할 수 있습니다.
+              </p>
             </div>
 
-            {/* 하단 기능 카드 */}
-            <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
-              {["맞춤형 창업 지원 계획", "투자자 연결 및 지원사업 추천", "실습 진행 관리 및 피드백"].map(
-                (text) => (
-                  <div key={text} className="rounded-xl bg-gray-100 px-6 py-8 text-center">
-                    <p className="font-semibold text-gray-800">{text}</p>
-                  </div>
-                ),
-              )}
+            {/* 중앙 이미지 플레이스홀더 — 피그마 600×350 비율 */}
+            <div className="mx-auto mt-16 max-w-2xl">
+              <div
+                className="aspect-[600/350] w-full rounded-xl bg-gray-200"
+                style={{ boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
+              />
+            </div>
+
+            {/* 하단 기능 항목 — 피그마 가로 배치, 중앙 정렬 */}
+            <div className="mt-10 flex flex-col items-center justify-center gap-8 md:flex-row md:gap-10">
+              {["맞춤형 창업 지원 계획", "투자자 연결 및 지원사업 추천", "실습 진행 관리 및 피드백"].map((text) => (
+                <div key={text} className="rounded-xl bg-gray-100 px-8 py-6 text-center">
+                  <p className="text-[27px] font-medium" style={{ color: "#222222" }}>
+                    {text}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -372,53 +387,51 @@ export default function Home() {
             SECTION 5: SPACES — 헤더 + 5개 전폭 공간 카드
         ================================================================ */}
         <section id="spaces" className="w-full bg-white">
-          {/* 섹션 헤더 */}
+          {/* 섹션 헤더 — 피그마 중앙 정렬, 64px 타이틀 */}
           <div className="px-6 py-20 text-center md:px-12">
-            <p className="mb-5 text-left text-4xl tracking-widest text-gray-400 md:text-5xl">SPACE</p>
-            <h2 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl lg:text-5xl">
+            <p className="mb-4 text-[27px] font-medium" style={{ color: "#555555" }}>
+              SPACE
+            </p>
+            <h2 className="text-5xl font-bold leading-tight md:text-6xl lg:text-[64px]" style={{ color: "#222222" }}>
               Explore the spaces where startups grow.
             </h2>
           </div>
 
-          {/* 공간 목록 — 카드 높이 50vh, 카드 사이 백색 간격 */}
-          <div className="flex flex-col gap-36">
+          {/* 공간 카드 — 높이 560px, 카드 간격 100px */}
+          <div className="flex flex-col gap-[100px]">
             {[
               {
                 name: "GYOWOO LOUNGE",
                 desc: "Premium event space for community gatherings and networking.",
                 bg: "bg-gray-400",
-                overlay: "bg-black/30",
               },
               {
                 name: "WORK CAFE",
                 desc: "Open collaborative workspace designed for founders and creators.",
                 bg: "bg-stone-700",
-                overlay: "bg-black/40",
               },
               {
                 name: "CREATIVE STUDIO",
                 desc: "Professional media production space for content and branding.",
                 bg: "bg-neutral-800",
-                overlay: "bg-black/35",
               },
               {
                 name: "GYOWOO OFFICE",
                 desc: "Private offices and meeting rooms for focused work.",
                 bg: "bg-slate-800",
-                overlay: "bg-black/40",
               },
               {
                 name: "SKY DECK",
                 desc: "Rooftop networking and relaxation space with city views.",
                 bg: "bg-gradient-to-b from-gray-200 to-gray-500",
-                overlay: "bg-black/10",
               },
-            ].map(({ name, desc, bg, overlay }) => (
-              <div key={name} className={`relative h-[50vh] w-full ${bg}`}>
-                <div className={`absolute inset-0 ${overlay}`} />
-                <div className="absolute bottom-8 left-8 md:bottom-10 md:left-12">
-                  <h3 className="text-xl font-bold text-white md:text-2xl">{name}</h3>
-                  <p className="mt-2 max-w-xs text-sm text-white/80 md:text-base">{desc}</p>
+            ].map(({ name, desc, bg }) => (
+              <div key={name} className={`relative h-[560px] w-full ${bg}`}>
+                {/* 피그마: 하단 → 상단 방향 그라디언트 오버레이 */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-10 left-8 md:left-[120px]">
+                  <h3 className="text-[48px] font-bold leading-[72px] text-white">{name}</h3>
+                  <p className="mt-1 max-w-xl text-[27px] leading-[40px] text-white/90">{desc}</p>
                 </div>
               </div>
             ))}
@@ -426,15 +439,65 @@ export default function Home() {
         </section>
 
         {/* ================================================================
-            CTA 섹션 — "함께 성장할 준비가 되셨나요?"
+            우리의 서비스 섹션 — 3개 서비스 카드 (피그마 id=4:137)
         ================================================================ */}
-        <section className="flex min-h-[60vh] w-full flex-col items-center justify-center bg-gradient-to-b from-white via-gray-50 to-gray-100 px-6 py-32 text-center">
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl lg:text-4xl">
+        <section className="w-full bg-white px-6 py-20 md:px-8 lg:px-[120px]">
+          <div className="mb-12 text-center">
+            <h2 className="text-[36px] font-bold leading-[40px]" style={{ color: "#101828" }}>
+              우리의 서비스
+            </h2>
+            <p className="mt-4 text-lg" style={{ color: "#4A5565" }}>
+              성공적인 비즈니스를 위한 맞춤형 솔루션을 제공합니다
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            {[
+              {
+                title: "AI 컨설팅",
+                desc: "최신 AI 기술을 활용한 맞춤형 컨설팅으로 비즈니스의 디지털 전환을 성공적으로 이끌어냅니다.",
+              },
+              {
+                title: "공간 대여",
+                desc: "창의적인 업무 환경을 위한 최적화된 공간을 제공합니다. 유연한 대여 옵션으로 비즈니스 요구에 맞춰 선택하세요.",
+              },
+              {
+                title: "비즈니스 지원",
+                desc: "전문 컨설턴트와 함께 전략 수립부터 실행까지, 스타트업의 성장 단계별로 필요한 지원을 제공합니다.",
+              },
+            ].map(({ title, desc }) => (
+              <div
+                key={title}
+                className="flex flex-col gap-4 rounded-xl bg-white p-6"
+                style={{ boxShadow: "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)" }}
+              >
+                {/* 이미지 플레이스홀더 */}
+                <div className="aspect-video w-full overflow-hidden rounded-lg bg-gray-200" />
+                <h3 className="text-2xl font-semibold" style={{ color: "#101828" }}>
+                  {title}
+                </h3>
+                <p className="text-base leading-[26px]" style={{ color: "#4A5565" }}>
+                  {desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ================================================================
+            CTA 섹션 — 피그마 bg:#F9FAFB, h:800
+        ================================================================ */}
+        <section
+          className="flex min-h-[800px] w-full flex-col items-center justify-center px-6 py-20 text-center"
+          style={{ backgroundColor: "#F9FAFB" }}
+        >
+          <h2 className="text-[36px] font-bold leading-[40px]" style={{ color: "#101828" }}>
             함께 성장할 준비가 되셨나요?
           </h2>
           <a
             href="#"
-            className="mt-6 text-sm text-gray-400 underline underline-offset-4 transition-colors hover:text-gray-700"
+            className="mt-6 text-xl transition-colors hover:opacity-70"
+            style={{ color: "#4A5565" }}
           >
             문의하기
           </a>
@@ -442,33 +505,31 @@ export default function Home() {
       </main>
 
       {/* ================================================================
-          FOOTER — 검정 배경
+          FOOTER — 피그마: 흰 배경, border-t, 좌: 카피라이트 / 우: SNS 링크
       ================================================================ */}
-      <footer className="bg-black px-6 py-16 md:px-12 lg:px-20">
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 md:flex-row md:items-start md:justify-between">
-          <div>
-            <p className="text-lg font-bold text-yellow-400">인투미랩</p>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-gray-400">
-              혁신을 만드는 스타트업 파트너. AI 기술과 최적화된 공간으로 당신의 성장을 지원합니다.
-            </p>
-          </div>
+      <footer
+        className="w-full border-t px-6 py-[49px] md:px-[120px]"
+        style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB" }}
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between">
+          <p className="text-[14.67px]" style={{ color: "#6A7282" }}>
+            © 2026 GYOWOO
+          </p>
           <nav>
-            <ul className="flex flex-col gap-3 text-sm text-gray-400 md:flex-row md:gap-8">
-              {["About", "Community", "AI Agent", "Spaces"].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase().replace(" ", "-")}`}
-                    className="transition-colors hover:text-white"
-                  >
-                    {item}
+            <ul className="flex items-center gap-8 text-[14.67px]" style={{ color: "#6A7282" }}>
+              {[
+                { label: "Instagram", href: "#" },
+                { label: "LinkedIn",  href: "#" },
+                { label: "Contact",   href: "#" },
+              ].map(({ label, href }) => (
+                <li key={label}>
+                  <a href={href} className="transition-opacity hover:opacity-60">
+                    {label}
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
-        </div>
-        <div className="mx-auto mt-12 max-w-6xl border-t border-gray-800 pt-6">
-          <p className="text-center text-xs text-gray-600">© 2026 인투미랩. All rights reserved.</p>
         </div>
       </footer>
     </div>
