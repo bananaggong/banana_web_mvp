@@ -1,3 +1,5 @@
+import StickyScrollFeatures from "./components/StickyScrollFeatures";
+
 export default function Page() {
   return (
     <div className="font-sans text-gray-900 antialiased">
@@ -58,87 +60,20 @@ export default function Page() {
         </section>
 
         {/* ================================================================
-            SECTION 2: FEATURES — 타이틀 + 3개 피처 행 (교대 배치)
+            SECTION 2: FEATURES — GSAP 스티키 스크롤 (슬롯머신 + 크로스페이드)
         ================================================================ */}
-        <section className="mx-auto max-w-7xl px-6 py-20 lg:px-16">
+        <section className="py-20">
           {/* 섹션 타이틀 */}
-          <h2 className="max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
-            testtest{" "}
-            <span className="text-orange-500">testtest testtest</span>{" "}
-            testtest testtest testtest testtest testtest.
-          </h2>
-
-          {/* 피처 행들 */}
-          <div className="mt-20 flex flex-col gap-24">
-            {/* 피처 1: 텍스트 좌 / 이미지 우 */}
-            <div className="flex flex-col items-center gap-12 md:flex-row md:gap-16">
-              <div className="flex-1">
-                <div className="mb-3 h-10 w-10 rounded-lg bg-gray-200" />
-                <h3 className="text-3xl font-bold">testtest</h3>
-                <p className="mt-3 text-lg text-gray-500">
-                  testtest testtest testtest testtest testtest testtest testtest testtest testtest.
-                </p>
-                <button className="mt-5 rounded-md bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-700">
-                  testtest testtest testtest
-                </button>
-                <p className="mt-6 text-sm text-gray-400">testtest</p>
-                <div className="mt-2 flex gap-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-6 w-6 rounded bg-gray-200" />
-                  ))}
-                </div>
-              </div>
-              <div className="w-full flex-1">
-                <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gray-200 shadow-xl" />
-              </div>
-            </div>
-
-            {/* 피처 2: 이미지 좌 / 텍스트 우 */}
-            <div className="flex flex-col items-center gap-12 md:flex-row-reverse md:gap-16">
-              <div className="flex-1">
-                <div className="mb-3 h-10 w-10 rounded-lg bg-gray-200" />
-                <h3 className="text-3xl font-bold">testtest</h3>
-                <p className="mt-3 text-lg text-gray-500">
-                  testtest testtest testtest testtest testtest testtest testtest testtest testtest.
-                </p>
-                <button className="mt-5 rounded-md bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-700">
-                  testtest testtest testtest
-                </button>
-                <p className="mt-6 text-sm text-gray-400">testtest</p>
-                <div className="mt-2 flex gap-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-6 w-6 rounded bg-gray-200" />
-                  ))}
-                </div>
-              </div>
-              <div className="w-full flex-1">
-                <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gray-200 shadow-xl" />
-              </div>
-            </div>
-
-            {/* 피처 3: 텍스트 좌 / 이미지 우 */}
-            <div className="flex flex-col items-center gap-12 md:flex-row md:gap-16">
-              <div className="flex-1">
-                <div className="mb-3 h-10 w-10 rounded-lg bg-gray-200" />
-                <h3 className="text-3xl font-bold">testtest</h3>
-                <p className="mt-3 text-lg text-gray-500">
-                  testtest testtest testtest testtest testtest testtest testtest testtest testtest.
-                </p>
-                <button className="mt-5 rounded-md bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-700">
-                  testtest testtest testtest
-                </button>
-                <p className="mt-6 text-sm text-gray-400">testtest</p>
-                <div className="mt-2 flex gap-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-6 w-6 rounded bg-gray-200" />
-                  ))}
-                </div>
-              </div>
-              <div className="w-full flex-1">
-                <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gray-200 shadow-xl" />
-              </div>
-            </div>
+          <div className="mx-auto max-w-7xl px-6 pb-16 lg:px-16">
+            <h2 className="max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
+              testtest{" "}
+              <span className="text-orange-500">testtest testtest</span>{" "}
+              testtest testtest testtest testtest testtest.
+            </h2>
           </div>
+
+          {/* 스티키 스크롤 피처 섹션 */}
+          <StickyScrollFeatures />
         </section>
 
         {/* ================================================================
