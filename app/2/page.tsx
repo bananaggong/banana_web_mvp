@@ -1,4 +1,5 @@
 import StickyScrollFeatures from "./components/StickyScrollFeatures";
+import HeroImage from "./components/HeroImage";
 
 export default function Page() {
   return (
@@ -74,9 +75,9 @@ export default function Page() {
             </div>
             </div>
 
-            {/* 이미지: 가로 956px, 세로 641px 고정 (aspect ratio 사용) */}
+            {/* 이미지: 스크롤 시 Feature 1 이미지로 자연스럽게 전환 */}
             <div className="mt-12">
-            <div className="aspect-[956/641] w-full overflow-hidden rounded-2xl bg-gray-200 shadow-xl" />
+              <HeroImage src="/FORESTING.png" targetSrc="/LOAM.png" />
             </div>
         </div>
         </section>

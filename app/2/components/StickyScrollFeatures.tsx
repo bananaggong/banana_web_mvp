@@ -20,15 +20,15 @@ const FEATURES: Feature[] = [
   {
     id: 1,
     slideText: "LOAM AI",
-    title: "Welcome to AppGen",
+    title: "Analyze status, score market fit",
     description: [
-      "업무 흐름 구조화",
-      "일정 및 과업 정리",
-      "의사결정 지원",
-      "개인 작업 패턴 기반 추천 시스템"
+      "- 사업 및 프로젝트 구조 진단",
+      "- 시장 적합성 분석",
+      "- 실행 우선순위 도출",
+      "- 전략 리포트 생성"
     ],
     imgUrl:
-      "https://images.unsplash.com/photo-1618477247222-ac60ceb0a416?q=80&w=800&auto=format&fit=crop",
+      "/LOAM.png",
   },
   {
     id: 2,
@@ -41,27 +41,31 @@ const FEATURES: Feature[] = [
       "개인 작업 패턴 기반 추천 시스템"
     ],
     imgUrl:
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop",
+      "/MINARI.png",
   },
   {
     id: 3,
     slideText: "FORESTING OS",
     title: "Transform raw data",
     description: [
-      "업무 흐름 구조화",<br />,
-      "일정 및 과업 정리",<br />,
-      "의사결정 지원",<br />, 
-      "개인 작업 패턴 기반 추천 시스템",
+      "전략 설계",
+      "실행 관리",
+      "프로젝트 흐름 통합", 
+      "AI 기반 운영 지원",
     ],
     imgUrl:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
+      "/FORESTING.png",
   }
 ];
 
 // 슬롯머신 각 아이템의 고정 높이 (px)
 const SLOT_ITEM_HEIGHT = 56;
 
-export default function StickyScrollFeatures() {
+interface StickyScrollFeaturesProps {
+  sharedImageActive: boolean;
+}
+
+export default function StickyScrollFeatures({ sharedImageActive }: StickyScrollFeaturesProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,7 +78,6 @@ export default function StickyScrollFeatures() {
   triggerRefs.current.length = FEATURES.length;
   imageRefs.current.length = FEATURES.length;
 
-  // activeIndex를 현재 FEATURES 범위 내로 클램핑
   const safeIndex = Math.min(activeIndex, FEATURES.length - 1);
 
   // ScrollTrigger 등록 (마운트 시 1회)
@@ -82,12 +85,22 @@ export default function StickyScrollFeatures() {
     () => {
       triggerRefs.current.forEach((trigger, i) => {
         if (!trigger) return;
+        // 이미지·텍스트 전환 트리거
         ScrollTrigger.create({
           trigger,
-          start: "top 50%",
-          end: "bottom 50%",
+          start: "top 30%",
+          end: "bottom 30%",
           onEnter: () => setActiveIndex(i),
           onEnterBack: () => setActiveIndex(i),
+        });
+
+        // 각 섹션 정렬 시점에 일시 저항감 추가
+        ScrollTrigger.create({
+          trigger,
+          start: "top top+=64",
+          end: "+= 80",
+          pin: true,
+          pinSpacing: false,
         });
       });
     },
@@ -106,17 +119,20 @@ export default function StickyScrollFeatures() {
       });
 
       // 우측 이미지 크로스페이드
+      // sharedImageActive=true (flying 이미지 활성): 모든 feature 이미지 숨김
+      // sharedImageActive=false (flying 이미지 비활성): safeIndex에 해당하는 이미지만 표시
       imageRefs.current.forEach((img, i) => {
         if (!img) return;
+        const shouldShow = i === safeIndex && !sharedImageActive;
         gsap.to(img, {
-          opacity: i === safeIndex ? 1 : 0,
-          duration: 0.5,
+          opacity: shouldShow ? 1 : 0,
+          duration: 0.25,
           ease: "power2.out",
           overwrite: true,
         });
       });
 
-      // 좌측 스크롤 텍스트 아이템 음영 처리: 비활성 = 흐릿하게
+      // 좌측 스크롤 텍스트 아이템 음영 처리
       triggerRefs.current.forEach((item, i) => {
         if (!item) return;
         gsap.to(item, {
@@ -127,7 +143,7 @@ export default function StickyScrollFeatures() {
         });
       });
     },
-    { dependencies: [safeIndex] },
+    { dependencies: [safeIndex, sharedImageActive] },
   );
 
   return (
@@ -168,17 +184,24 @@ export default function StickyScrollFeatures() {
           {FEATURES.map((feature, i) => (
             <div
               key={feature.id}
+              data-feature-index={i}
               ref={(el) => {
                 triggerRefs.current[i] = el;
               }}
-              className="flex min-h-screen items-center"
+              className="flex min-h-[50vh] items-start"
               style={{ opacity: i === 0 ? 1 : 0.2 }}
             >
-              <div className="py-20">
+              <div className="pt-8">
                 <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
-                <p className="mt-4 text-lg leading-relaxed text-gray-500">
-                  {feature.description}
-                </p>
+                {/* 배열 각 항목을 줄바꿈하여 렌더링 */}
+                <ul className="mt-4 space-y-2">
+                  {feature.description.map((line, j) => (
+                    <li key={j} className="flex items-start gap-2 text-lg text-gray-500">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-300" />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}
@@ -189,15 +212,16 @@ export default function StickyScrollFeatures() {
             슬롯머신과 정확히 같은 시점에 unstick됨 */}
         <div className="w-[454px] shrink-0">
           <div className="sticky top-16 pt-10">
-            <div className="relative h-[433px] w-[454px] overflow-hidden rounded-2xl shadow-2xl">
+            <div id="loam-sticky-image" className="relative h-[433px] w-[454px] overflow-hidden rounded-2xl shadow-2xl">
               {FEATURES.map((f, i) => (
                 <div
                   key={f.id}
                   ref={(el) => {
                     imageRefs.current[i] = el;
                   }}
+                  data-feature-img=""
                   className="absolute inset-0"
-                  style={{ opacity: i === 0 ? 1 : 0 }}
+                  style={{ opacity: 0 }}
                 >
                   <Image src={f.imgUrl} alt={f.title} fill className="object-cover" />
                 </div>
@@ -212,12 +236,19 @@ export default function StickyScrollFeatures() {
       ══════════════════════════════════════════ */}
       <div className="w-full lg:hidden">
         {FEATURES.map((feature) => (
-          <div key={feature.id} className="flex min-h-screen items-center py-16">
+          <div key={feature.id} className="flex min-h-[50vh] items-center py-8">
             <div className="w-full">
               <p className="mb-1 text-sm tracking-wide text-gray-400">The AppGen platform</p>
               <p className="text-3xl font-bold text-orange-500">{feature.slideText}</p>
               <h3 className="mt-4 text-2xl font-bold text-gray-900">{feature.title}</h3>
-              <p className="mt-2 leading-relaxed text-gray-500">{feature.description}</p>
+              <ul className="mt-2 space-y-1">
+                {feature.description.map((line, j) => (
+                  <li key={j} className="flex items-start gap-2 text-base text-gray-500">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-300" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
               <div className="relative mt-6 w-full overflow-hidden rounded-2xl shadow-xl aspect-[454/433]">
                 <Image src={feature.imgUrl} alt={feature.title} fill className="object-cover" />
               </div>
