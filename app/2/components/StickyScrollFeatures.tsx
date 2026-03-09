@@ -27,8 +27,7 @@ const FEATURES: Feature[] = [
       "- 실행 우선순위 도출",
       "- 전략 리포트 생성"
     ],
-    imgUrl:
-      "/LOAM.png",
+    imgUrl: "/LOAM.png",
   },
   {
     id: 2,
@@ -40,8 +39,7 @@ const FEATURES: Feature[] = [
       "의사결정 지원",
       "개인 작업 패턴 기반 추천 시스템"
     ],
-    imgUrl:
-      "/MINARI.png",
+    imgUrl: "/MINARI.png",
   },
   {
     id: 3,
@@ -50,34 +48,30 @@ const FEATURES: Feature[] = [
     description: [
       "전략 설계",
       "실행 관리",
-      "프로젝트 흐름 통합", 
+      "프로젝트 흐름 통합",
       "AI 기반 운영 지원",
     ],
-    imgUrl:
-      "/FORESTING.png",
+    imgUrl: "/FORESTING.png",
   }
 ];
 
-// 슬롯머신 각 아이템의 고정 높이 (px)
 const SLOT_ITEM_HEIGHT = 56;
 
-export default function StickyScrollFeatures() {
+interface StickyScrollFeaturesProps {
+  onIndexChange?: (index: number) => void;
+}
+
+export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeaturesProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  // 좌측 스크롤 텍스트 아이템: ScrollTrigger 대상 + opacity 애니메이션 대상
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const sliderRef = useRef<HTMLDivElement>(null);
-  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // FEATURES 개수가 바뀌었을 때 이전 렌더의 stale 엔트리 제거
   triggerRefs.current.length = FEATURES.length;
-  imageRefs.current.length = FEATURES.length;
 
-  // activeIndex를 현재 FEATURES 범위 내로 클램핑
   const safeIndex = Math.min(activeIndex, FEATURES.length - 1);
 
-  // ScrollTrigger 등록 (마운트 시 1회)
   useGSAP(
     () => {
       triggerRefs.current.forEach((trigger, i) => {
@@ -86,18 +80,22 @@ export default function StickyScrollFeatures() {
           trigger,
           start: "top 35%",
           end: "bottom 50%",
-          onEnter: () => setActiveIndex(i),
-          onEnterBack: () => setActiveIndex(i),
+          onEnter: () => {
+            setActiveIndex(i);
+            onIndexChange?.(i);
+          },
+          onEnterBack: () => {
+            setActiveIndex(i);
+            onIndexChange?.(i);
+          },
         });
       });
     },
     { scope: containerRef },
   );
 
-  // activeIndex 변경 시 애니메이션 실행
   useGSAP(
     () => {
-      // 슬롯머신 y축 슬라이드
       gsap.to(sliderRef.current, {
         y: -safeIndex * SLOT_ITEM_HEIGHT,
         duration: 0.6,
@@ -105,18 +103,6 @@ export default function StickyScrollFeatures() {
         overwrite: true,
       });
 
-      // 우측 이미지 크로스페이드
-      imageRefs.current.forEach((img, i) => {
-        if (!img) return;
-        gsap.to(img, {
-          opacity: i === safeIndex ? 1 : 0,
-          duration: 0.5,
-          ease: "power2.out",
-          overwrite: true,
-        });
-      });
-
-      // 좌측 스크롤 텍스트 아이템 음영 처리: 비활성 = 흐릿하게
       triggerRefs.current.forEach((item, i) => {
         if (!item) return;
         gsap.to(item, {
@@ -131,18 +117,13 @@ export default function StickyScrollFeatures() {
   );
 
   return (
-    // 1920px 뷰포트 기준 콘텐츠 최대 너비 1136px 센터 정렬
-    <div ref={containerRef} className="mx-auto max-w-[1136px] px-6 lg:px-0">
+    <div id="features-section" ref={containerRef} className="mx-auto max-w-[1136px] px-6 lg:px-0">
       {/* ══════════════════════════════════════════
           DESKTOP LAYOUT (2-column flex)
-          flex 컨테이너의 자식으로 두 sticky 요소를 배치하면
-          align-items:stretch 에 의해 두 컬럼이 동일한 높이를 가지므로
-          슬롯머신과 이미지가 정확히 같은 시점에 unstick됨
       ══════════════════════════════════════════ */}
       <div className="hidden gap-16 lg:flex">
         {/* ── Left column: sticky 슬롯머신 헤더 + 스크롤 텍스트 ── */}
         <div className="min-w-0 flex-1">
-          {/* sticky 슬롯머신: 좌측 컬럼 높이(N×100vh)까지 bound */}
           <div className="sticky top-16 z-10 bg-white pb-6 pt-10">
             <p className="mb-2 text-sm tracking-wide text-gray-400">Core Products</p>
             <div className="overflow-hidden" style={{ height: SLOT_ITEM_HEIGHT }}>
@@ -160,23 +141,21 @@ export default function StickyScrollFeatures() {
                 ))}
               </div>
             </div>
-            {/* 하단 페이드 마스크 */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-b from-white to-transparent" />
           </div>
 
-          {/* 스크롤 텍스트 아이템 */}
           {FEATURES.map((feature, i) => (
             <div
               key={feature.id}
               ref={(el) => {
                 triggerRefs.current[i] = el;
               }}
+              data-feature-index={i}
               className="flex min-h-[50vh] items-start"
               style={{ opacity: i === 0 ? 1 : 0.2 }}
             >
               <div className="pt-8">
                 <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
-                {/* 배열 각 항목을 줄바꿈하여 렌더링 */}
                 <ul className="mt-4 space-y-2">
                   {feature.description.map((line, j) => (
                     <li key={j} className="flex items-start gap-2 text-lg text-gray-500">
@@ -190,25 +169,10 @@ export default function StickyScrollFeatures() {
           ))}
         </div>
 
-        {/* ── Right column: sticky 이미지 ──
-            flex 자식으로서 좌측 컬럼과 동일한 높이(stretch)를 가지므로
-            슬롯머신과 정확히 같은 시점에 unstick됨 */}
+        {/* ── Right column: ghost anchor (HeroImage flying 이미지의 morph target) ── */}
         <div className="w-[454px] shrink-0">
           <div className="sticky top-16 pt-10">
-            <div id="loam-sticky-image" className="relative h-[433px] w-[454px] overflow-hidden rounded-2xl shadow-2xl">
-              {FEATURES.map((f, i) => (
-                <div
-                  key={f.id}
-                  ref={(el) => {
-                    imageRefs.current[i] = el;
-                  }}
-                  className="absolute inset-0"
-                  style={{ opacity: i === 0 ? 1 : 0 }}
-                >
-                  <Image src={f.imgUrl} alt={f.title} fill className="object-cover" />
-                </div>
-              ))}
-            </div>
+            <div id="loam-sticky-image" className="h-[433px] w-[454px]" />
           </div>
         </div>
       </div>

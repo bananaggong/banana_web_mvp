@@ -1,7 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import StickyScrollFeatures from "./components/StickyScrollFeatures";
 import HeroImage from "./components/HeroImage";
 
+const FEATURE_IMAGES = ["/LOAM.png", "/MINARI.png", "/FORESTING.png"];
+
 export default function Page() {
+  const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
+
   return (
     <div className="font-sans text-gray-900 antialiased">
       {/* ================================================================
@@ -77,7 +84,11 @@ export default function Page() {
 
             {/* 이미지: 스크롤 시 Feature 1 이미지로 자연스럽게 전환 */}
             <div className="mt-12">
-              <HeroImage src="/FORESTING.png" targetSrc="/LOAM.png" />
+              <HeroImage
+                src="/FORESTING.png"
+                images={FEATURE_IMAGES}
+                activeIndex={activeFeatureIndex}
+              />
             </div>
         </div>
         </section>
@@ -96,7 +107,7 @@ export default function Page() {
           </div>
 
           {/* 스티키 스크롤 피처 섹션 */}
-          <StickyScrollFeatures />
+          <StickyScrollFeatures onIndexChange={setActiveFeatureIndex} />
         </section>
 
         {/* ================================================================

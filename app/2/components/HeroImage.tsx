@@ -10,8 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface HeroImageProps {
   src: string;
-  targetSrc: string;
-  onSharedImageToggle?: (isActive: boolean) => void;
+  images: string[];
+  activeIndex: number;
 }
 
 /**
@@ -21,36 +21,43 @@ interface HeroImageProps {
  *  placeholderRef  레이아웃 유지용 div (문서 흐름 유지, 스크롤과 함께 이동)
  *  flyingRef       position:fixed div (pin 없이 스크롤 진행도에 따라 뷰포트에서 이동)
  *
- * ─ 핵심 원칙 ─────────────────────────────────────────────
- *  pin: true 사용 금지
- *  → GSAP pin spacer = heroHeight + pinDuration → sticky section을 아래로 밀어
- *    "pin 종료 시점 ≠ sticky 활성화 시점" 순환 의존성 발생
- *
- *  대신 position:fixed 플라잉 이미지 사용
- *  → pin spacer 없음 → getBoundingClientRect() 자연 좌표 = 그대로 정확
- *
  * ─ 스크롤 범위 ────────────────────────────────────────────
- *  startScroll = heroDocTop - 64        (placeholder top = 헤더 아래 64px)
- *  endScroll   = stickyWrapperDocTop - 64  (sticky wrapper top:64px → 활성화)
- *  progress=0: flying = 히어로 이미지 위치/크기
- *  progress=1: flying = sticky 슬롯 위치/크기 (완전 일치 → 즉시 swap 가능)
+ *  Morph trigger  : hero top → sticky wrapper 활성화 시점
+ *                   flying이 hero 위치에서 ghost anchor 위치로 이동/축소
+ *  Exit trigger   : #features-section bottom → 뷰포트 하단 통과 시 fade out
+ *
+ * ─ 이미지 전환 ────────────────────────────────────────────
+ *  dock 전   : src(히어로) → images[0] crossfade (scroll progress 기반)
+ *  dock 후   : activeIndex 변경 시 images[activeIndex] crossfade
  */
-export default function HeroImage({ src, targetSrc, onSharedImageToggle }: HeroImageProps) {
+export default function HeroImage({ src, images, activeIndex }: HeroImageProps) {
   const placeholderRef = useRef<HTMLDivElement>(null);
   const placeholderImgRef = useRef<HTMLDivElement>(null);
   const flyingRef = useRef<HTMLDivElement>(null);
-  const crossfadeRef = useRef<HTMLDivElement>(null);
+  // hero base image opacity (morph 중 0으로)
+  const heroLayerRef = useRef<HTMLDivElement>(null);
+  // feature images wrapper opacity (morph 중 1로)
+  const featureWrapperRef = useRef<HTMLDivElement>(null);
+  // 각 feature 이미지 레이어 refs
+  const featureImgRefs = useRef<(HTMLDivElement | null)[]>([]);
+  featureImgRefs.current.length = images.length;
 
+  // dock 상태 추적 (GSAP trigger 내에서 설정)
+  const isDocked = useRef(false);
+
+  // ── Morph + exit ScrollTrigger 설정 (마운트 시 1회) ───────────────────
   useGSAP(() => {
     const placeholder = placeholderRef.current;
     const placeholderImg = placeholderImgRef.current;
     const flying = flyingRef.current;
-    const crossfade = crossfadeRef.current;
+    const heroLayer = heroLayerRef.current;
+    const featureWrapper = featureWrapperRef.current;
     const targetEl = document.getElementById("loam-sticky-image");
+    const featuresSection = document.getElementById("features-section");
 
-    if (!placeholder || !placeholderImg || !flying || !crossfade || !targetEl) return;
+    if (!placeholder || !placeholderImg || !flying || !heroLayer || !featureWrapper || !targetEl) return;
 
-    const stickyWrapper = targetEl.parentElement; // div.sticky.top-16.pt-10
+    const stickyWrapper = targetEl.parentElement;
     if (!stickyWrapper) return;
 
     const scrollY = window.scrollY;
@@ -59,89 +66,77 @@ export default function HeroImage({ src, targetSrc, onSharedImageToggle }: HeroI
     const stickyWrapperDocTop = stickyWrapper.getBoundingClientRect().top + scrollY;
     const heroDocTop = heroRect.top + scrollY;
 
-    // ── progress=0 위치: 플레이스홀더가 헤더 아래 64px에 닿는 순간 ──────────
     const fromLeft = heroRect.left;
-    const fromTop = 64; // 헤더 높이 = viewport top 기준
+    const fromTop = 64;
     const fromWidth = heroRect.width;
     const fromHeight = heroRect.height;
 
-    // ── progress=1 위치: sticky wrapper 활성화 → #loam-sticky-image top = 64+40=104px ──
-    const toLeft = targetRect.left; // 수평 위치 (스크롤과 무관하게 고정)
+    const toLeft = targetRect.left;
     const toTop = 104; // 헤더(64) + pt-10(40)
     const toWidth = targetRect.width;
     const toHeight = targetRect.height;
 
-    // pin spacer 없으므로 자연 문서 좌표가 정확
     const scrollRange = Math.max(1, stickyWrapperDocTop - heroDocTop);
 
-    // LOAM AI 섹션(feature index 0)이 "top 35%" 기준으로 활성화되는 스크롤 위치 계산
-    // → 이 시점에 morph가 완료되도록 dockProgress를 산출
+    // LOAM AI 섹션이 "top 35%" 기준으로 활성화되는 스크롤 위치 → morph 완료 시점
     const loamTrigger = document.querySelector<HTMLElement>('[data-feature-index="0"]');
     const loamDocTop = loamTrigger
       ? loamTrigger.getBoundingClientRect().top + window.scrollY
-      : stickyWrapperDocTop; // fallback
+      : stickyWrapperDocTop;
     const dockScroll = loamDocTop - window.innerHeight * 0.35;
     const startScroll = heroDocTop - 64;
     const dockProgress = Math.min(0.99, Math.max(0.01, (dockScroll - startScroll) / scrollRange));
 
-    // 초기 상태 설정
+    // 초기 상태
     gsap.set(flying, { top: fromTop, left: fromLeft, width: fromWidth, height: fromHeight, opacity: 0 });
-    gsap.set(crossfade, { opacity: 0 });
+    gsap.set(heroLayer, { opacity: 1 });
+    gsap.set(featureWrapper, { opacity: 0 });
+    featureImgRefs.current.forEach((el, i) => {
+      if (el) gsap.set(el, { opacity: i === 0 ? 1 : 0 });
+    });
 
-    // 마운트 시: 첫 번째 sticky 이미지를 숨기고 flying이 시각적 역할 담당
-    onSharedImageToggle?.(true);
-
-    // ── 즉시 DOM 조작 헬퍼 (React 상태 업데이트 지연 없이 gap 방지) ────────────
-
-    // progress=1 도달: flying → sticky 이미지 순간 swap
-    const swapToSticky = () => {
-      gsap.set(flying, { opacity: 0 });
-      // 직접 DOM: 첫 번째 feature 이미지 즉시 표시 (React 리렌더 0.5s 지연 방지)
-      document.querySelectorAll("[data-feature-img]").forEach((el, i) =>
-        gsap.set(el, { opacity: i === 0 ? 1 : 0 }),
-      );
-      onSharedImageToggle?.(false);
-    };
-
-    // 역스크롤: sticky 이미지 → flying 순간 swap
     const swapToFlying = () => {
-      document.querySelectorAll("[data-feature-img]").forEach((el) => gsap.set(el, { opacity: 0 }));
+      isDocked.current = false;
       gsap.set(flying, { opacity: 1 });
-      onSharedImageToggle?.(true);
+      gsap.set(placeholderImg, { visibility: "hidden" });
     };
 
-    const trigger = ScrollTrigger.create({
+    const morphTrigger = ScrollTrigger.create({
       trigger: placeholder,
-      start: "top 64px", // placeholder top = 헤더 아래 → 애니메이션 시작
-      end: `+=${scrollRange}`, // sticky wrapper 활성화 시점까지
-      scrub: true, // lag 없이 scroll에 직결 (lag 있으면 onLeave 시 위치 불일치)
+      start: "top 64px",
+      end: `+=${scrollRange}`,
+      scrub: true,
       invalidateOnRefresh: true,
 
       onEnter: () => {
-        // placeholder가 헤더 아래 도달 → flying 활성화, placeholder 이미지 숨김
         gsap.set(placeholderImg, { visibility: "hidden" });
         gsap.set(flying, { opacity: 1, top: fromTop, left: fromLeft, width: fromWidth, height: fromHeight });
-        onSharedImageToggle?.(true);
       },
 
-      onLeave: swapToSticky,
+      onLeave: () => {
+        // dock 완료: flying을 dock 위치에 고정, sticky 이미지로 넘기지 않고 유지
+        isDocked.current = true;
+        gsap.set(flying, {
+          top: toTop,
+          left: toLeft,
+          width: toWidth,
+          height: toHeight,
+          opacity: 1,
+        });
+      },
 
       onEnterBack: () => {
-        // sticky 구간에서 역스크롤 → flying 복원
         swapToFlying();
-        gsap.set(placeholderImg, { visibility: "hidden" });
       },
 
       onLeaveBack: () => {
-        // 히어로 구간 위로 되돌아감 → placeholder 이미지 복원
+        isDocked.current = false;
         gsap.set(flying, { opacity: 0 });
         gsap.set(placeholderImg, { visibility: "visible" });
-        onSharedImageToggle?.(false);
       },
 
       onUpdate: (self) => {
         const p = self.progress;
-        // dockProgress 이전: morph 진행 / 이후: target 위치에 고정(sticky가 올라올 때까지 대기)
         const morphP = Math.min(1, p / dockProgress);
 
         gsap.set(flying, {
@@ -150,17 +145,54 @@ export default function HeroImage({ src, targetSrc, onSharedImageToggle }: HeroI
           width:  fromWidth  + (toWidth  - fromWidth)  * morphP,
           height: fromHeight + (toHeight - fromHeight) * morphP,
         });
-        gsap.set(crossfade, { opacity: morphP });
+        gsap.set(heroLayer, { opacity: 1 - morphP });
+        gsap.set(featureWrapper, { opacity: morphP });
       },
     });
 
-    return () => trigger.kill();
+    // features section이 뷰포트 하단을 벗어날 때 flying fade out
+    let exitTrigger: ScrollTrigger | null = null;
+    if (featuresSection) {
+      exitTrigger = ScrollTrigger.create({
+        trigger: featuresSection,
+        start: "bottom bottom",
+        onLeave: () => {
+          gsap.to(flying, { opacity: 0, duration: 0.3 });
+        },
+        onEnterBack: () => {
+          if (isDocked.current) {
+            gsap.to(flying, { opacity: 1, duration: 0.3 });
+          }
+        },
+      });
+    }
+
+    return () => {
+      morphTrigger.kill();
+      exitTrigger?.kill();
+    };
   });
+
+  // ── activeIndex 변경 시 feature 이미지 crossfade (dock 상태일 때만) ─────
+  useGSAP(
+    () => {
+      if (!isDocked.current) return;
+      featureImgRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.to(el, {
+          opacity: i === activeIndex ? 1 : 0,
+          duration: 0.5,
+          ease: "power2.out",
+          overwrite: true,
+        });
+      });
+    },
+    { dependencies: [activeIndex] },
+  );
 
   return (
     <div className="relative">
       {/* ── 레이아웃 유지용 플레이스홀더 ──────────────────────────────────── */}
-      {/* 문서 흐름 유지 + flying 활성화 전 실제 이미지 표시 역할 */}
       <div
         ref={placeholderRef}
         className="relative w-full overflow-hidden rounded-2xl shadow-2xl"
@@ -180,7 +212,6 @@ export default function HeroImage({ src, targetSrc, onSharedImageToggle }: HeroI
           position: "fixed",
           zIndex: 20,
           pointerEvents: "none",
-          // 초기값: GSAP이 onEnter 전 올바른 값으로 설정
           top: 0,
           left: 0,
           width: "1px",
@@ -188,11 +219,23 @@ export default function HeroImage({ src, targetSrc, onSharedImageToggle }: HeroI
           opacity: 0,
         }}
       >
-        {/* 베이스: src 이미지 (히어로 이미지) */}
-        <Image src={src} alt="" fill className="object-cover" aria-hidden />
-        {/* 크로스페이드: scroll 진행도에 따라 targetSrc(LOAM.png)로 전환 */}
-        <div ref={crossfadeRef} className="absolute inset-0" style={{ opacity: 0 }}>
-          <Image src={targetSrc} alt="" fill className="object-cover" aria-hidden />
+        {/* 히어로 베이스 이미지: morph 중 fade out */}
+        <div ref={heroLayerRef} className="absolute inset-0">
+          <Image src={src} alt="" fill className="object-cover" aria-hidden />
+        </div>
+
+        {/* Feature 이미지 레이어들: morph 중 fade in, dock 후 activeIndex 기반 전환 */}
+        <div ref={featureWrapperRef} className="absolute inset-0" style={{ opacity: 0 }}>
+          {images.map((imgSrc, i) => (
+            <div
+              key={i}
+              ref={(el) => { featureImgRefs.current[i] = el; }}
+              className="absolute inset-0"
+              style={{ opacity: i === 0 ? 1 : 0 }}
+            >
+              <Image src={imgSrc} alt="" fill className="object-cover" aria-hidden />
+            </div>
+          ))}
         </div>
       </div>
     </div>
