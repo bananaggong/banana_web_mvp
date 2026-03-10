@@ -38,7 +38,7 @@ export default function Page() {
         <section className="relative w-full overflow-hidden">
           {/* 비디오 */}
           <video
-            src="/main.webp"
+            src="/main.webm"
             autoPlay
             loop
             muted
@@ -48,9 +48,21 @@ export default function Page() {
           {/* 어두운 그림자 오버레이 */}
           <div className="absolute inset-0 bg-black/40" />
           {/* 오버레이 텍스트 */}
-          <div className="absolute inset-0 flex items-end justify-start px-12 pb-16 lg:px-20 lg:pb-24">
-            <h1 className="max-w-3xl text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
-              We Build Infrastructure For Execution
+          <div className="absolute inset-0 flex items-start justify-start px-12 pt-[8%] lg:px-20">
+            <h1
+              style={{
+                fontSize: "202px",
+                lineHeight: "218px",
+                letterSpacing: "-3.89px",
+                fontWeight: 700,
+                color: "#dedddc",
+                width: "fit-content",
+              }}
+              className="font-['Inter'] text-left"
+            >
+              We Build<br />
+              Infrastructure<br />
+              For Execution
             </h1>
           </div>
         </section>
@@ -63,14 +75,14 @@ export default function Page() {
           <div className="w-full">
             <div className="flex flex-col items-start text-left">
               <h2 className="font-bold leading-snug text-gray-900" style={{ fontSize: "38px" }}>
-                AI와 데이터를 기반으로 판단, 전략, 실행을 연결하는
+                아이디어를 
                 <br />
-                Banana Technology.
+                실행으로 연결하는 BANANA.
               </h2>
               <p className="mt-4 leading-relaxed text-gray-500" style={{ fontSize: "22px" }}>
-                우리는 복잡한 문제를 구조화하고
+                정보와 도구는 넘쳐나지만 무엇을 먼저 해야 할지 판단하기는 여전히 어렵습니다.
                 <br />
-                아이디어와 전략이 실제 실행으로 이어질 수 있도록 소프트웨어와 실행 인프라를 설계한다.
+                Banana Technology는 AI와 데이터 기술을 통해 판단, 전략, 실행을 연결하는 시스템을 만듭니다.
               </p>
             </div>
 

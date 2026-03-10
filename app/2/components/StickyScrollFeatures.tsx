@@ -160,7 +160,7 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
         if (!trigger) return;
         ScrollTrigger.create({
           trigger,
-          start: i === LAST_FEATURE_INDEX ? "top 40%" : "top 55%",
+          start: i === LAST_FEATURE_INDEX ? "top 40%" : "top 65%",
           end: "bottom 60%",
           onEnter: () => {
             setActiveIndex(i);

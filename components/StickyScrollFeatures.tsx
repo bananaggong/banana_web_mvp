@@ -22,10 +22,10 @@ const FEATURES: Feature[] = [
     slideText: "LOAM AI",
     title: "Analyze status, score market fit",
     description: [
-      "- 사업 및 프로젝트 구조 진단",
-      "- 시장 적합성 분석",
-      "- 실행 우선순위 도출",
-      "- 전략 리포트 생성",
+      "사업 및 프로젝트 구조 진단",
+      "시장 적합성 분석",
+      "실행 우선순위 도출",
+      "전략 리포트 생성",
     ],
     imgUrl: "/LOAM.png",
   },
@@ -168,7 +168,7 @@ export default function StickyScrollFeatures() {
         if (!trigger) return;
         ScrollTrigger.create({
           trigger,
-          start: "top 35%",
+          start: "top 45%",
           end:   "bottom 50%",
           onEnter:     () => setActiveIndex(i),
           onEnterBack: () => setActiveIndex(i),
