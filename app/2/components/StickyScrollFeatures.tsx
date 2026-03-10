@@ -160,12 +160,12 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
         if (!trigger) return;
         ScrollTrigger.create({
           trigger,
-          start: "top 40%",
+          start: i === LAST_FEATURE_INDEX ? "top 40%" : "top 55%",
           end: "bottom 60%",
           onEnter: () => {
             setActiveIndex(i);
             onIndexChange?.(i);
-            if (i === LAST_FEATURE_INDEX) pinLastCard();
+            // pinLastCard는 별도 trigger에서 더 늦게 실행
           },
           onEnterBack: () => {
             setActiveIndex(i);
@@ -175,6 +175,16 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
           },
         });
       });
+
+      // FORESTING OS pin은 이미지/텍스트 전환보다 더 늦게 발동
+      const lastTrigger = triggerRefs.current[LAST_FEATURE_INDEX];
+      if (lastTrigger) {
+        ScrollTrigger.create({
+          trigger: lastTrigger,
+          start: "top 30%",
+          onEnter: () => pinLastCard(),
+        });
+      }
 
       return () => {
         window.removeEventListener("scroll", trackScroll);
@@ -206,7 +216,7 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
   );
 
   return (
-    <div id="features-section" ref={containerRef} className="mx-auto max-w-[1136px] px-6 lg:px-0">
+    <div id="features-section" ref={containerRef} className="mx-auto max-w-[1400px] px-6 lg:px-0">
       {/* ══════════════════════════════════════════
           DESKTOP LAYOUT (2-column flex)
       ══════════════════════════════════════════ */}
@@ -261,9 +271,9 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
         </div>
 
         {/* ── Right column: ghost anchor (HeroImage flying 이미지의 morph target) ── */}
-        <div className="w-[454px] shrink-0">
+        <div className="w-[842px] shrink-0">
           <div className="sticky top-16 pt-10">
-            <div id="loam-sticky-image" className="h-[433px] w-[454px]" />
+            <div id="loam-sticky-image" className="h-[474px] w-[842px]" />
           </div>
         </div>
       </div>
@@ -286,7 +296,7 @@ export default function StickyScrollFeatures({ onIndexChange }: StickyScrollFeat
                   </li>
                 ))}
               </ul>
-              <div className="relative mt-6 w-full overflow-hidden rounded-2xl shadow-xl aspect-[454/433]">
+              <div className="relative mt-6 w-full overflow-hidden rounded-2xl shadow-xl aspect-[842/474]">
                 <Image src={feature.imgUrl} alt={feature.title} fill className="object-cover" />
               </div>
             </div>

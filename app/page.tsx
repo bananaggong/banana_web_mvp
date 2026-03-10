@@ -85,7 +85,7 @@ export default function Page() {
             {/* 이미지: 스크롤 시 Feature 1 이미지로 자연스럽게 전환 */}
             <div className="mt-12">
               <HeroImage
-                src="/FORESTING.png"
+                src="/HeroImg.png"
                 images={FEATURE_IMAGES}
                 activeIndex={activeFeatureIndex}
               />
@@ -97,6 +97,7 @@ export default function Page() {
             SECTION 2: FEATURES — GSAP 스티키 스크롤 (슬롯머신 + 크로스페이드)
         ================================================================ */}
         <section className="py-20">
+
 
           {/* 스티키 스크롤 피처 섹션 */}
           <StickyScrollFeatures onIndexChange={setActiveFeatureIndex} />
