@@ -48,14 +48,14 @@ export default function Page() {
           {/* 어두운 그림자 오버레이 */}
           <div className="absolute inset-0 bg-black/40" />
           {/* 오버레이 텍스트 */}
-          <div className="absolute inset-0 flex items-start justify-start px-12 pt-[8%] lg:px-20">
+          <div className="absolute inset-0 flex items-start justify-start px-12 pt-[3%] lg:px-20">
             <h1
               style={{
                 fontSize: "202px",
                 lineHeight: "218px",
                 letterSpacing: "-3.89px",
                 fontWeight: 700,
-                color: "#dedddc",
+                color: "#FFFFFF",
                 width: "fit-content",
               }}
               className="font-['Inter'] text-left"
@@ -223,33 +223,110 @@ export default function Page() {
       {/* ================================================================
           FOOTER
       ================================================================ */}
-      <footer className="border-t border-gray-200 bg-white px-6 py-16 lg:px-16">
+      <footer className="bg-slate-950 px-6 pt-20 pb-10 lg:px-16">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
-            <div className="col-span-2 md:col-span-1">
-              <div className="h-7 w-20 rounded bg-gray-200" />
-              <p className="mt-4 text-sm text-gray-400">
-                testtest testtest testtest testtest.
+
+          {/* ── 상단: 브랜드 + SNS ── */}
+          <div className="flex flex-col gap-6 border-b border-slate-800 pb-12 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-2xl font-bold tracking-tight text-white">
+                Banana Technology
+              </p>
+              <p className="mt-2 text-sm text-slate-400">
+                We Build Infrastructure For Execution.
               </p>
             </div>
-            {[1, 2, 3, 4].map((col) => (
-              <div key={col}>
-                <p className="mb-3 text-sm font-semibold text-gray-700">testtest</p>
-                <ul className="flex flex-col gap-2 text-sm text-gray-400">
-                  {[1, 2, 3, 4].map((row) => (
-                    <li key={row}>
-                      <a href="#" className="hover:text-gray-700">
-                        testtest
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {/* SNS 아이콘 */}
+            <div className="flex items-center gap-4">
+              {/* LinkedIn */}
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-slate-500 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <path d="M20.447 20.452H17.21v-5.569c0-1.328-.024-3.037-1.85-3.037-1.851 0-2.135 1.445-2.135 2.939v5.667H9.99V9h3.108v1.561h.044c.433-.82 1.49-1.685 3.066-1.685 3.278 0 3.883 2.157 3.883 4.963v6.613zM5.337 7.433a1.805 1.805 0 1 1 0-3.61 1.805 1.805 0 0 1 0 3.61zm1.604 13.019H3.73V9h3.211v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
+              </a>
+              {/* GitHub */}
+              <a
+                href="#"
+                aria-label="GitHub"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-slate-500 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+                </svg>
+              </a>
+            </div>
           </div>
-          <div className="mt-12 border-t border-gray-200 pt-6 text-center text-xs text-gray-400">
-            testtest testtest testtest testtest testtest.
+
+          {/* ── 중단: 네비게이션 컬럼 ── */}
+          <div className="grid grid-cols-2 gap-10 border-b border-slate-800 py-12 md:grid-cols-4">
+            <div>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">Company</p>
+              <ul className="flex flex-col gap-3">
+                {["About", "Blog", "Careers", "Press"].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-sm text-slate-400 transition hover:text-white">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">Product</p>
+              <ul className="flex flex-col gap-3">
+                {["LOAM AI", "MINARI AI", "FORESTING OS", "Changelog"].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-sm text-slate-400 transition hover:text-white">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">Support</p>
+              <ul className="flex flex-col gap-3">
+                {["Documentation", "Contact", "Status", "Community"].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-sm text-slate-400 transition hover:text-white">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">Contact</p>
+              <ul className="flex flex-col gap-3 text-sm text-slate-400">
+                <li>02-000-0000</li>
+                <li>
+                  <a href="mailto:contact@bananatech.io" className="transition hover:text-white">
+                    contact@bananacompany.ai
+                  </a>
+                </li>
+                <li className="leading-relaxed">
+                  서울 마포구 독막로6길 9<br />2층 416호 (합정동)
+                </li>
+              </ul>
+            </div>
           </div>
+
+          {/* ── 하단: 사업자 정보 + 법적 링크 ── */}
+          <div className="flex flex-col gap-4 pt-8 md:flex-row md:items-center md:justify-between">
+            <p className="text-xs leading-relaxed text-slate-600">
+              주식회사 바나나테크놀러지 &nbsp;|&nbsp; 대표 김시원 &nbsp;|&nbsp; 사업자등록번호 218-88-03697
+              <br className="md:hidden" />
+              <span className="hidden md:inline"> &nbsp;|&nbsp; </span>
+              (우) 04072 서울특별시 마포구 독막로6길 9 (합정동) 2층 416호
+            </p>
+            <div className="flex items-center gap-5 text-xs text-slate-600">
+              <a href="#" className="font-semibold transition hover:text-slate-300">개인정보처리방침</a>
+              <a href="#" className="transition hover:text-slate-300">이용약관</a>
+            </div>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-700">
+            Copyright ⓒ 2026 BananaTechnology. All Rights Reserved.
+          </p>
+
         </div>
       </footer>
     </div>

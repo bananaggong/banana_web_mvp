@@ -12,7 +12,8 @@ interface Feature {
   id: number;
   slideText: string;
   title: string;
-  description: string[];
+  subtitle: string;
+  capabilities: string[];
   imgUrl: string;
 }
 
@@ -21,7 +22,9 @@ const FEATURES: Feature[] = [
     id: 1,
     slideText: "LOAM AI",
     title: "Analyze status, score market fit",
-    description: [
+    subtitle:
+      "사업과 프로젝트의 현재 상태를 분석하고 시장 적합성과 실행 가능성을 점수화합니다.",
+    capabilities: [
       "사업 및 프로젝트 구조 진단",
       "시장 적합성 분석",
       "실행 우선순위 도출",
@@ -33,11 +36,13 @@ const FEATURES: Feature[] = [
     id: 2,
     slideText: "MINARI AI",
     title: "Build agents, workflows",
-    description: [
+    subtitle:
+      "혼자 일하는 사람과 소규모 팀을 위해 업무 흐름과 작업 관리를 지원합니다.",
+    capabilities: [
       "업무 흐름 구조화",
       "일정 및 과업 정리",
       "의사결정 지원",
-      "개인 작업 패턴 기반 추천 시스템",
+      "개인 작업 패턴 기반 추천",
     ],
     imgUrl: "/MINARI.png",
   },
@@ -45,7 +50,9 @@ const FEATURES: Feature[] = [
     id: 3,
     slideText: "FORESTING OS",
     title: "Transform raw data",
-    description: [
+    subtitle:
+      "창업자와 소규모 조직을 위해 전략, 설계, 분석, 실행 데이터를 하나의 흐름으로 연결합니다.",
+    capabilities: [
       "전략 설계",
       "실행 관리",
       "프로젝트 흐름 통합",
@@ -181,7 +188,7 @@ export default function StickyScrollFeatures() {
       if (pinSentinelRef.current) {
         ScrollTrigger.create({
           trigger:     pinSentinelRef.current,
-          start:       "top 30%",
+          start:       "top 22%",
           onEnter:     () => pinLastCard(),
           onEnterBack: () => unpinLastCard(),
         });
@@ -260,15 +267,24 @@ export default function StickyScrollFeatures() {
                 style={{ opacity: i === 0 ? 1 : 0.2 }}
               >
                 <div className="pt-8">
-                  <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
-                  <ul className="mt-4 space-y-2">
-                    {feature.description.map((line, j) => (
-                      <li key={j} className="flex items-start gap-2 text-lg text-gray-500">
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-300" />
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* 설명 문장 — 20px */}
+                  <p className="leading-relaxed text-gray-700" style={{ fontSize: "20px" }}>
+                    {feature.subtitle}
+                  </p>
+                  {/* Capabilities — 16px */}
+                  <div className="mt-6">
+                    <p className="font-semibold text-gray-400" style={{ fontSize: "16px" }}>
+                      Capabilities
+                    </p>
+                    <ul className="mt-2 space-y-1.5">
+                      {feature.capabilities.map((line, j) => (
+                        <li key={j} className="flex items-center gap-2 text-gray-500" style={{ fontSize: "16px" }}>
+                          <span className="h-1 w-1 shrink-0 rounded-full bg-gray-300" />
+                          {line}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </Fragment>
@@ -304,15 +320,20 @@ export default function StickyScrollFeatures() {
             <div className="w-full">
               <p className="mb-1 text-sm tracking-wide text-gray-400">Core Products</p>
               <p className="text-3xl font-bold text-orange-500">{feature.slideText}</p>
-              <h3 className="mt-4 text-2xl font-bold text-gray-900">{feature.title}</h3>
-              <ul className="mt-2 space-y-1">
-                {feature.description.map((line, j) => (
-                  <li key={j} className="flex items-start gap-2 text-base text-gray-500">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-300" />
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
+              <p className="mt-4 leading-relaxed text-gray-700" style={{ fontSize: "20px" }}>
+                {feature.subtitle}
+              </p>
+              <div className="mt-4">
+                <p className="font-semibold text-gray-400" style={{ fontSize: "16px" }}>Capabilities</p>
+                <ul className="mt-2 space-y-1.5">
+                  {feature.capabilities.map((line, j) => (
+                    <li key={j} className="flex items-center gap-2 text-gray-500" style={{ fontSize: "16px" }}>
+                      <span className="h-1 w-1 shrink-0 rounded-full bg-gray-300" />
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <div className="relative mt-6 aspect-[714/402] w-full overflow-hidden rounded-2xl shadow-xl">
                 <Image src={feature.imgUrl} alt={feature.title} fill className="object-cover" />
               </div>
