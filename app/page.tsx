@@ -150,8 +150,8 @@ export default function Page() {
               (우) 04072 서울특별시 마포구 독막로6길 9 (합정동) 2층 416호
             </p>
             <div className="flex items-center gap-5 text-xs text-slate-400">
-              <a href="#" className="font-semibold transition hover:text-slate-300">개인정보처리방침</a>
-              <a href="#" className="transition hover:text-slate-300">이용약관</a>
+              <a href="#" className="font-semibold transition hover:text-slate-300"></a>
+              <a href="#" className="transition hover:text-slate-300"></a>
             </div>
           </div>
 
