@@ -113,7 +113,7 @@ export default function Page() {
         {/* ================================================================
             SECTION 3: BRAND MESSAGE (VISION)
         ================================================================ */}
-        <section id="vision" className="mt-16 w-full bg-gray-100 px-4 py-12 sm:mt-24 sm:px-6 sm:py-16 md:mt-32 md:py-20 lg:mt-[250px] lg:px-16">
+        <section id="vision" className="mt-16 w-full bg-gray-100 px-4 py-16 sm:mt-24 sm:px-6 sm:py-20 md:mt-32 md:py-24 lg:mt-[250px] lg:px-16 lg:py-28">
           <div className="mx-auto max-w-[1136px]">
 
             {/* 윗 텍스트 — Pretendard Bold, 반응형 */}
