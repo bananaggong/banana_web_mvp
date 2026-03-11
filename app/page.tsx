@@ -59,7 +59,8 @@ export default function Page() {
         {/* ================================================================
             SECTION 1: HERO (ABOUT)
         ================================================================ */}
-        <section id="about" className="mx-auto max-w-[956px] px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-12 md:pb-20 md:pt-16 lg:px-0">
+        {/* 영상 ↔ 아이디어 텍스트 간격 252px (반응형) */}
+        <section id="about" className="mx-auto max-w-[956px] px-4 pb-0 pt-16 sm:px-6 sm:pt-24 md:pt-32 lg:pt-[252px] lg:px-0">
           {/* 부제목 + 설명 + 이미지 */}
           <div className="w-full">
             <div className="flex flex-col items-start text-left">
@@ -87,12 +88,14 @@ export default function Page() {
               />
             </div>
           </div>
+          {/* 히어로 이미지 ↔ 섹션2 타이틀 간격 350px (반응형) */}
+          <div className="h-20 sm:h-28 md:h-40 lg:h-[350px]" aria-hidden />
         </section>
 
         {/* ================================================================
             SECTION 2: FEATURES (PRODUCTS)
         ================================================================ */}
-        <section id="products" className="py-12 sm:py-16 md:py-20">
+        <section id="products" className="pb-12 pt-0 sm:pb-16 md:pb-20">
           {/* 섹션 타이틀 */}
           <div className="mx-auto max-w-[1136px] px-4 pb-10 sm:px-6 sm:pb-12 md:pb-16 lg:px-0">
             <h2 className="max-w-3xl text-2xl font-bold leading-tight sm:text-3xl md:text-4xl lg:text-5xl">
@@ -110,7 +113,7 @@ export default function Page() {
         {/* ================================================================
             SECTION 3: BRAND MESSAGE (VISION)
         ================================================================ */}
-        <section id="vision" className="mt-12 w-full bg-gray-100 px-4 py-12 sm:mt-16 sm:px-6 sm:py-16 md:mt-24 md:py-20 lg:px-16">
+        <section id="vision" className="mt-16 w-full bg-gray-100 px-4 py-12 sm:mt-24 sm:px-6 sm:py-16 md:mt-32 md:py-20 lg:mt-[250px] lg:px-16">
           <div className="mx-auto max-w-[1136px]">
 
             {/* 윗 텍스트 — Pretendard Bold, 반응형 */}
