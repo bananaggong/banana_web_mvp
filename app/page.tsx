@@ -7,28 +7,18 @@ export default function Page() {
       {/* ================================================================
           HEADER
       ================================================================ */}
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 md:px-12 lg:px-16">
-        {/* 로고 */}
-        <img src="/banana1.svg" alt="Banana Technology" className="h-10 w-auto" />
+      <header className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-gray-800 bg-white px-4 sm:px-6 md:px-12 lg:px-16" style={{ fontFamily: '"Pretendard Variable", "Pretendard", sans-serif', fontWeight: 500 }}>
+        {/* 좌측: 로고 */}
+        <a href="/" className="flex shrink-0 items-center">
+          <img src="/banana1.svg" alt="Banana Technology" className="h-8 w-auto sm:h-10" />
+        </a>
 
-        {/* 중앙 내비 */}
-        <nav className="hidden items-center gap-8 text-sm text-gray-600 md:flex">
-          <a href="#" className="hover:text-gray-900">제품</a>
-          <a href="#" className="hover:text-gray-900">LOAM AI</a>
-          <a href="#" className="hover:text-gray-900">MINARI AI</a>
-          <a href="#" className="hover:text-gray-900">FORESTING OS</a>
-          <a href="#" className="hover:text-gray-900">회사 소개</a>
+        {/* 우측: ABOUT → 섹션1, PRODUCTS → 섹션2, VISION → 섹션3 */}
+        <nav className="flex items-center gap-4 text-xs tracking-wide text-gray-900 sm:gap-6 sm:text-sm md:gap-8">
+          <a href="#about" className="hover:opacity-70">ABOUT</a>
+          <a href="#products" className="hover:opacity-70">PRODUCTS</a>
+          <a href="#vision" className="hover:opacity-70">VISION</a>
         </nav>
-
-        {/* 우측 버튼 */}
-        <div className="flex items-center gap-3">
-          <a href="mailto:contact@bananatech.io" className="hidden text-sm text-gray-600 hover:text-gray-900 md:block">
-            문의하기
-          </a>
-          <button className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700">
-            시작하기
-          </button>
-        </div>
       </header>
 
       <main>
@@ -47,19 +37,17 @@ export default function Page() {
           />
           {/* 어두운 그림자 오버레이 */}
           <div className="absolute inset-0 bg-black/40" />
-          {/* 오버레이 텍스트 */}
-          <div className="absolute inset-0 flex items-start justify-start px-12 pt-[3%] lg:px-20">
+          {/* 오버레이 텍스트 — 반응형: 모바일 중앙정렬, 데스크톱 좌측 */}
+          <div className="absolute inset-0 flex items-center justify-center px-4 pt-[3%] sm:px-8 md:items-start md:justify-start md:px-12 md:pt-[5%] lg:px-20 lg:pt-[3%]">
             <h1
               style={{
                 fontFamily: '"GangwonEduTountoun", sans-serif',
-                fontSize: "202px",
-                lineHeight: "218px",
-                letterSpacing: "-3.89px",
                 fontWeight: 700,
                 color: "#FFFFFF",
                 width: "fit-content",
+                letterSpacing: "-0.02em",
               }}
-              className="text-left"
+              className="text-center text-4xl leading-tight sm:text-6xl sm:leading-tight md:text-left md:text-7xl md:leading-tight lg:text-[120px] lg:leading-[130px] xl:text-[202px] xl:leading-[218px] xl:tracking-[-3.89px]"
             >
               We Build<br />
               Infrastructure<br />
@@ -69,26 +57,26 @@ export default function Page() {
         </section>
 
         {/* ================================================================
-            SECTION 1: HERO
+            SECTION 1: HERO (ABOUT)
         ================================================================ */}
-        <section className="mx-auto max-w-[956px] px-6 pb-20 pt-16 lg:px-0">
+        <section id="about" className="mx-auto max-w-[956px] px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-12 md:pb-20 md:pt-16 lg:px-0">
           {/* 부제목 + 설명 + 이미지 */}
           <div className="w-full">
             <div className="flex flex-col items-start text-left">
-              <h2 className="font-bold leading-snug text-gray-900" style={{ fontSize: "38px" }}>
+              <h2 className="text-2xl leading-snug text-gray-900 sm:text-3xl md:text-[38px]" style={{ fontFamily: '"Pretendard Variable", "Pretendard", sans-serif', fontWeight: 700 }}>
                 아이디어를 
                 <br />
                 실행으로 연결하는 BANANA.
               </h2>
-              <p className="mt-4 leading-relaxed text-gray-500" style={{ fontSize: "22px" }}>
+              <p className="mt-3 text-base leading-relaxed text-gray-500 sm:mt-4 sm:text-lg md:text-[22px]" style={{ fontFamily: '"Pretendard Variable", "Pretendard", sans-serif', fontWeight: 500 }}>
                 정보와 도구는 넘쳐나지만 무엇을 먼저 해야 할지 판단하기는 여전히 어렵습니다.
                 <br />
                 Banana Technology는 AI와 데이터 기술을 통해 판단, 전략, 실행을 연결하는 시스템을 만듭니다.
               </p>
             </div>
 
-            {/* 히어로 이미지 — 989×548 */}
-            <div className="mt-12 overflow-hidden rounded-2xl shadow-2xl">
+            {/* 히어로 이미지 — 989×548 비율 유지 */}
+            <div className="mt-8 overflow-hidden rounded-xl shadow-2xl sm:mt-12 sm:rounded-2xl">
               <Image
                 src="/HeroImg.png"
                 alt="Hero"
@@ -102,12 +90,12 @@ export default function Page() {
         </section>
 
         {/* ================================================================
-            SECTION 2: FEATURES — GSAP 스티키 스크롤 (독립형)
+            SECTION 2: FEATURES (PRODUCTS)
         ================================================================ */}
-        <section className="py-20">
+        <section id="products" className="py-12 sm:py-16 md:py-20">
           {/* 섹션 타이틀 */}
-          <div className="mx-auto max-w-[1136px] px-6 pb-16 lg:px-0">
-            <h2 className="max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
+          <div className="mx-auto max-w-[1136px] px-4 pb-10 sm:px-6 sm:pb-12 md:pb-16 lg:px-0">
+            <h2 className="max-w-3xl text-2xl font-bold leading-tight sm:text-3xl md:text-4xl lg:text-5xl">
               BANANA가 실행을 위해 만든{" "}
               <br />
               
@@ -120,22 +108,22 @@ export default function Page() {
         </section>
 
         {/* ================================================================
-            SECTION 3: BRAND MESSAGE
+            SECTION 3: BRAND MESSAGE (VISION)
         ================================================================ */}
-        <section className="mt-24 w-full bg-gray-100 px-6 py-20 lg:px-16">
+        <section id="vision" className="mt-12 w-full bg-gray-100 px-4 py-12 sm:mt-16 sm:px-6 sm:py-16 md:mt-24 md:py-20 lg:px-16">
           <div className="mx-auto max-w-[1136px]">
 
-            {/* 윗 텍스트 */}
-            <h2 className="font-bold leading-snug text-gray-900" style={{ fontSize: "60px" }}>
+            {/* 윗 텍스트 — Pretendard Bold, 반응형 */}
+            <h2 className="text-3xl leading-snug text-gray-900 sm:text-4xl md:text-5xl lg:text-[60px]" style={{ fontFamily: '"Pretendard Variable", "Pretendard", sans-serif', fontWeight: 700 }}>
               더 이상의 우연은 없습니다<br />
               견고한 실행 표준이 살아 남습니다
             </h2>
 
-            {/* 노란선 */}
-            <div className="mt-4 mb-12 h-4 w-106 rounded-full bg-yellow-400" />
+            {/* 노란선 — rounded 없음, 반응형 시 '실행 표준' 위치까지 길이 */}
+            <div className="mt-4 mb-8 h-3 w-72 bg-yellow-400 sm:mb-10 sm:mt-5 sm:h-4 sm:w-80 md:mb-12 md:w-96 lg:w-[420px]" />
 
-            {/* 아랫 텍스트 */}
-            <p className="leading-relaxed text-gray-600" style={{ fontSize: "37px" }}>
+            {/* 아랫 텍스트 — Pretendard Regular, 반응형 */}
+            <p className="text-lg leading-relaxed text-gray-600 sm:text-xl md:text-2xl lg:text-[37px]" style={{ fontFamily: '"Pretendard Variable", "Pretendard", sans-serif', fontWeight: 400 }}>
               정보가 넘쳐날수록 가장 강력한 자산은 '정확한 판단'과 '실행의 일관성'입니다.
               바나나테크놀러지는 AI와 데이터를 통해 비즈니스의 모든 노이즈를 제거하고
               아이디어가 즉시 실현되는 표준 체계를 만듭니다.
@@ -149,7 +137,7 @@ export default function Page() {
       {/* ================================================================
           FOOTER
       ================================================================ */}
-      <footer className="bg-slate-950 px-6 pt-20 pb-10 lg:px-16">
+      <footer className="bg-slate-950 px-4 pt-12 pb-8 sm:px-6 sm:pt-16 sm:pb-10 lg:px-16 lg:pt-20">
         <div className="mx-auto max-w-7xl">
 
           {/* ── 상단: 브랜드 + SNS ── */}

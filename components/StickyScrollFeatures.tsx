@@ -236,9 +236,9 @@ export default function StickyScrollFeatures() {
   );
 
   return (
-    <div ref={containerRef} className="mx-auto max-w-[1136px] px-6 lg:px-0">
+    <div ref={containerRef} className="mx-auto max-w-[1136px] px-4 sm:px-6 lg:px-0">
       {/* DESKTOP */}
-      <div className="hidden gap-16 lg:flex">
+      <div className="hidden gap-8 lg:flex lg:gap-16">
         {/* Left column */}
         <div className="min-w-0 flex-1">
           <div ref={slotHeaderRef} className="sticky top-16 z-10 bg-white pb-6 pt-10">
@@ -247,7 +247,7 @@ export default function StickyScrollFeatures() {
               <div ref={sliderRef}>
                 {FEATURES.map((f) => (
                   <div key={f.id} className="flex items-center" style={{ height: SLOT_ITEM_HEIGHT }}>
-                    <span className="text-4xl font-bold leading-none text-gray-900">
+                    <span className="text-4xl leading-none text-gray-900" style={{ fontFamily: '"Pretendard Variable", "Pretendard", sans-serif', fontWeight: 700 }}>
                       {f.slideText}
                     </span>
                   </div>
@@ -294,10 +294,10 @@ export default function StickyScrollFeatures() {
           <div ref={lastCardSpacerRef} style={{ display: "none" }} />
         </div>
 
-        {/* Right column */}
-        <div className="w-[714px] shrink-0">
+        {/* Right column — 반응형: lg에서 비율 유지하며 최대 714px */}
+        <div className="w-full shrink-0 lg:max-w-[714px]">
           <div ref={rightStickyRef} className="sticky top-16 pt-10">
-            <div className="relative h-[402px] w-[714px] overflow-hidden rounded-2xl shadow-2xl">
+            <div className="relative aspect-[714/402] w-full overflow-hidden rounded-2xl shadow-2xl">
               {FEATURES.map((f, i) => (
                 <div
                   key={f.id}
@@ -319,7 +319,7 @@ export default function StickyScrollFeatures() {
           <div key={feature.id} className="flex min-h-[50vh] items-center py-8">
             <div className="w-full">
               <p className="mb-1 text-sm tracking-wide text-gray-400">Core Products</p>
-              <p className="text-3xl font-bold text-gray-900">{feature.slideText}</p>
+              <p className="text-3xl text-gray-900" style={{ fontFamily: '"Pretendard Variable", "Pretendard", sans-serif', fontWeight: 700 }}>{feature.slideText}</p>
               <p className="mt-4 leading-relaxed text-gray-700" style={{ fontSize: "20px" }}>
                 {feature.subtitle}
               </p>

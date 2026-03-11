@@ -1,9 +1,9 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import "tailwindcss";
 
 @font-face {
   font-family: "GangwonEduTountoun";
-  src: url("/fonts/강원교육튼튼.ttf") format("truetype");
+  src: url("/fonts/GangwonEduTountoun.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -30,7 +30,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @keyframes glow-blink {
