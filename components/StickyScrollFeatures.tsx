@@ -247,7 +247,7 @@ export default function StickyScrollFeatures() {
               <div ref={sliderRef}>
                 {FEATURES.map((f) => (
                   <div key={f.id} className="flex items-center" style={{ height: SLOT_ITEM_HEIGHT }}>
-                    <span className="text-4xl font-bold leading-none text-orange-500">
+                    <span className="text-4xl font-bold leading-none text-gray-900">
                       {f.slideText}
                     </span>
                   </div>
@@ -319,7 +319,7 @@ export default function StickyScrollFeatures() {
           <div key={feature.id} className="flex min-h-[50vh] items-center py-8">
             <div className="w-full">
               <p className="mb-1 text-sm tracking-wide text-gray-400">Core Products</p>
-              <p className="text-3xl font-bold text-orange-500">{feature.slideText}</p>
+              <p className="text-3xl font-bold text-gray-900">{feature.slideText}</p>
               <p className="mt-4 leading-relaxed text-gray-700" style={{ fontSize: "20px" }}>
                 {feature.subtitle}
               </p>

@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Banana Technology",
   description: "",
+  icons: {
+    icon: "/banana2.svg",
+  },
 };
 
 export default function RootLayout({

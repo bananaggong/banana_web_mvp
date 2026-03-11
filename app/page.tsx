@@ -9,24 +9,24 @@ export default function Page() {
       ================================================================ */}
       <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 md:px-12 lg:px-16">
         {/* 로고 */}
-        <div className="h-7 w-24 rounded bg-gray-200" />
+        <img src="/banana1.svg" alt="Banana Technology" className="h-10 w-auto" />
 
         {/* 중앙 내비 */}
         <nav className="hidden items-center gap-8 text-sm text-gray-600 md:flex">
-          {["testtest", "testtest", "testtest", "testtest", "testtest"].map((item, i) => (
-            <a key={i} href="#" className="hover:text-gray-900">
-              {item}
-            </a>
-          ))}
+          <a href="#" className="hover:text-gray-900">제품</a>
+          <a href="#" className="hover:text-gray-900">LOAM AI</a>
+          <a href="#" className="hover:text-gray-900">MINARI AI</a>
+          <a href="#" className="hover:text-gray-900">FORESTING OS</a>
+          <a href="#" className="hover:text-gray-900">회사 소개</a>
         </nav>
 
         {/* 우측 버튼 */}
         <div className="flex items-center gap-3">
-          <a href="#" className="hidden text-sm text-gray-600 hover:text-gray-900 md:block">
-            testtest
+          <a href="mailto:contact@bananatech.io" className="hidden text-sm text-gray-600 hover:text-gray-900 md:block">
+            문의하기
           </a>
           <button className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700">
-            testtest
+            시작하기
           </button>
         </div>
       </header>
@@ -51,6 +51,7 @@ export default function Page() {
           <div className="absolute inset-0 flex items-start justify-start px-12 pt-[3%] lg:px-20">
             <h1
               style={{
+                fontFamily: '"GangwonEduTountoun", sans-serif',
                 fontSize: "202px",
                 lineHeight: "218px",
                 letterSpacing: "-3.89px",
@@ -58,7 +59,7 @@ export default function Page() {
                 color: "#FFFFFF",
                 width: "fit-content",
               }}
-              className="font-['Inter'] text-left"
+              className="text-left"
             >
               We Build<br />
               Infrastructure<br />
@@ -107,9 +108,10 @@ export default function Page() {
           {/* 섹션 타이틀 */}
           <div className="mx-auto max-w-[1136px] px-6 pb-16 lg:px-0">
             <h2 className="max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
-              testtest{" "}
-              <span className="text-orange-500">testtest testtest</span>{" "}
-              testtest testtest testtest testtest testtest.
+              BANANA가 실행을 위해 만든{" "}
+              <br />
+              
+              <span style={{ color: "#0234FD" }}>세 가지 핵심 시스템</span>{" "}
             </h2>
           </div>
 
@@ -118,104 +120,28 @@ export default function Page() {
         </section>
 
         {/* ================================================================
-            SECTION 3: INTEGRATIONS
+            SECTION 3: BRAND MESSAGE
         ================================================================ */}
-        <section className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-24 md:flex-row md:gap-16 lg:px-16">
-          <div className="w-full flex-1">
-            <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gray-200 shadow-xl" />
-          </div>
-          <div className="flex-1">
-            <h2 className="text-4xl font-bold leading-tight md:text-5xl">
-              testtest testtest testtest testtest.
+        <section className="mt-24 w-full bg-gray-100 px-6 py-20 lg:px-16">
+          <div className="mx-auto max-w-[1136px]">
+
+            {/* 윗 텍스트 */}
+            <h2 className="font-bold leading-snug text-gray-900" style={{ fontSize: "60px" }}>
+              더 이상의 우연은 없습니다<br />
+              견고한 실행 표준이 살아 남습니다
             </h2>
-            <p className="mt-5 text-lg text-gray-500">
-              testtest testtest testtest testtest testtest testtest testtest testtest testtest testtest
-              testtest testtest testtest testtest.
-            </p>
-            <button className="mt-8 rounded-md bg-gray-900 px-6 py-3 text-sm font-semibold text-white hover:bg-gray-700">
-              testtest
-            </button>
-          </div>
-        </section>
 
-        {/* ================================================================
-            SECTION 4: GETTING STARTED
-        ================================================================ */}
-        <section className="bg-[#FAF6EF] px-6 py-24 lg:px-16">
-          <div className="mx-auto max-w-7xl">
-            <h2 className="text-4xl font-bold md:text-5xl">testtest testtest testtest testtest.</h2>
-            <p className="mt-3 text-lg text-gray-500">
-              testtest testtest testtest testtest testtest testtest testtest.
+            {/* 노란선 */}
+            <div className="mt-4 mb-12 h-4 w-106 rounded-full bg-yellow-400" />
+
+            {/* 아랫 텍스트 */}
+            <p className="leading-relaxed text-gray-600" style={{ fontSize: "37px" }}>
+              정보가 넘쳐날수록 가장 강력한 자산은 '정확한 판단'과 '실행의 일관성'입니다.
+              바나나테크놀러지는 AI와 데이터를 통해 비즈니스의 모든 노이즈를 제거하고
+              아이디어가 즉시 실현되는 표준 체계를 만듭니다.
+              우리는 불확실한 미래 속에서 가장 확실한 이정표가 될 것입니다.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-1 border-b border-gray-300">
-              {["testtest", "testtest", "testtest", "testtest", "testtest", "testtest"].map(
-                (tab, i) => (
-                  <button
-                    key={i}
-                    className={`rounded-t-md px-5 py-3 text-sm font-medium ${
-                      i === 0
-                        ? "border-b-2 border-gray-900 bg-white text-gray-900"
-                        : "text-gray-500 hover:text-gray-700"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ),
-              )}
-            </div>
-
-            <div className="mt-6 flex flex-col gap-6 rounded-2xl bg-white p-6 shadow-md md:flex-row md:gap-10">
-              <div className="w-full md:w-56">
-                <h3 className="mb-4 text-xl font-bold">testtest testtest</h3>
-                <ul className="flex flex-col gap-1">
-                  {["testtest testtest", "testtest", "testtest", "testtest"].map((item, i) => (
-                    <li key={i}>
-                      <a
-                        href="#"
-                        className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm ${
-                          i === 0
-                            ? "bg-gray-100 font-medium text-gray-900"
-                            : "text-gray-500 hover:bg-gray-50"
-                        }`}
-                      >
-                        {item}
-                        {i === 0 && <span>→</span>}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex-1">
-                <div className="aspect-video w-full overflow-hidden rounded-xl bg-gray-200" />
-                <div className="mt-4 flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-gray-800">testtest testtest testtest</p>
-                    <p className="mt-1 text-sm text-gray-500">
-                      testtest testtest testtest testtest testtest.
-                    </p>
-                  </div>
-                  <button className="ml-4 shrink-0 rounded-md bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700">
-                    testtest testtest testtest
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-16 border-t border-gray-300 pt-12">
-              <h3 className="text-3xl font-bold leading-tight md:text-4xl">
-                testtest testtest testtest testtest{" "}
-                <span className="text-orange-500">testtest testtest testtest testtest?</span>
-              </h3>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <button className="rounded-md bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-700">
-                  testtest testtest
-                </button>
-                <button className="rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50">
-                  testtest testtest testtest
-                </button>
-              </div>
-            </div>
           </div>
         </section>
       </main>
